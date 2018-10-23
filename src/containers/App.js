@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react'
-import { Nav, NavItem, NavLink } from 'reactstrap'
+import Home from 'components/home/Home'
 
 const App = () => (
     <Fragment>
+        <Home/>
     </Fragment>
 )
 
