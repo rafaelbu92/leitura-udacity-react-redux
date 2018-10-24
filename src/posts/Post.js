@@ -5,9 +5,9 @@ import { getFormatDate } from 'utils/date'
 class Post {
 
     constructor({ author, body, category, commentCount, deleted, id, timestamp, title, voteScore }) {
-        this.author = author
         this.body = body
         this.category = category
+        this.author = author
         this.commentCount = commentCount
         this.deleted = deleted
         this.id = id
