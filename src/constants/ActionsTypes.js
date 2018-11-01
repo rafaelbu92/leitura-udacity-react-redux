@@ -25,3 +25,4 @@ const actions = {
     POSTS_NEW_COMMENT: 'POSTS_NEW_COMMENT',
     CATEGORIES_REQUEST_GET_ALL: 'CATEGORIES_REQUEST_GET_ALL'
 }
+export { actions }

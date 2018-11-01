@@ -1,11 +1,11 @@
-import { createActions } from 'utils/actions'
+import { createAction } from 'utils/actions'
 import { actions } from 'constants/ActionsTypes'
 
 
-const edit = createActions(actions.POSTS_EDIT)
-const save = createActions(actions.POSTS_SAVE)
-const vote = createActions(actions.POSTS_VOTE)
-const remove = createActions(actions.POSTS_REMOVE)
+const edit = createAction(actions.POSTS_EDIT)
+const save = createAction(actions.POSTS_SAVE)
+const vote = createAction(actions.POSTS_VOTE)
+const remove = createAction(actions.POSTS_REMOVE)
 const getAll = createAction(actions.POSTS_GET_ALL)
 const getAllByCategory = createAction(actions.POSTS_GET_ALL_BY_CATEGORY)
 const newComment = createAction(actions.POSTS_NEW_COMMENT)

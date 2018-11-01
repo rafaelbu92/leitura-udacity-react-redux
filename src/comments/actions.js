@@ -13,12 +13,12 @@ const requestSave = createAction(actions.COMMENTS_REQUEST_SAVE)
 const requestVote = createAction(actions.COMMENTS_REQUEST_VOTE)
 
 export { edit,
-         remove,
-         save,
-         vote,
-         getAll,
-         requestEdit,
-         requestGetAll,
-         requestRemove,
-         requestSave,
-         requestVote }
+    remove,
+    save,
+    vote,
+    getAll,
+    requestEdit,
+    requestGetAll,
+    requestRemove,
+    requestSave,
+    requestVote }
