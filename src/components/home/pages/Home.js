@@ -1,14 +1,17 @@
-import React, { Component } from 'react'
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Row, Col } from 'reactstrap'
-import classnames from 'classnames'
+import React, { Component, Fragment } from 'react'
+import { TabContent, TabPane, Nav } from 'reactstrap'
+import Tab from 'utils/Tab'
 
 class Home extends Component {
+
     constructor(props) {
         super(props)
-
         this.toggle = this.toggle.bind(this)
         this.state = {
-            activeTab: '1'
+            activeTab: '',
+            nameReact: 'React',
+            nameRedux: 'Redux',
+            nameUdacity: 'Udacity'
         }
     }
 
@@ -20,67 +23,23 @@ class Home extends Component {
         }
     }
     render() {
+        const { activeTab, nameReact, nameRedux, nameUdacity } = this.state
         return (
-            <div>
-                <Nav tabs>
-                    <NavItem>
-                        <NavLink
-                            className={classnames({ active: this.state.activeTab === '1' })}
-                            onClick={() => { this.toggle('1') }}
-                        >
-                            React
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink
-                            className={classnames({ active: this.state.activeTab === '2' })}
-                            onClick={() => { this.toggle('2') }}
-                        >
-                            Redux
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink
-                            className={classnames({ active: this.state.activeTab === '3' })}
-                            onClick={() => { this.toggle('3') }}
-                        >
-                            Udacity
-                        </NavLink>
-                    </NavItem>
+            <Fragment>
+                <Nav>
+                    <Tab name={nameReact} activeTab={activeTab} toggle={this.toggle}/>
+                    <Tab name={nameRedux} activeTab={activeTab} toggle={this.toggle}/>
+                    <Tab name={nameUdacity} activeTab={activeTab} toggle={this.toggle}/>
                 </Nav>
                 <TabContent activeTab={this.state.activeTab}>
                     <TabPane tabId="1">
-                        <Row>
-                            <Col sm="12">
-                            </Col>
-                        </Row>
                     </TabPane>
                     <TabPane tabId="2">
-                        <Row>
-                            <Col sm="6">
-                                <Card body>
-                                </Card>
-                            </Col>
-                            <Col sm="6">
-                                <Card body>
-                                </Card>
-                            </Col>
-                        </Row>
                     </TabPane>
                     <TabPane tabId="3">
-                        <Row>
-                            <Col sm="6">
-                                <Card body>
-                                </Card>
-                            </Col>
-                            <Col sm="6">
-                                <Card body>
-                                </Card>
-                            </Col>
-                        </Row>
                     </TabPane>
                 </TabContent>
-            </div>
+            </Fragment>
         )
     }
 }
