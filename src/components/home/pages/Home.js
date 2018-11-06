@@ -1,46 +1,39 @@
 import React, { Component, Fragment } from 'react'
-import { TabContent, TabPane, Nav } from 'reactstrap'
-import Tab from 'utils/Tab'
+import MainPage from '../components/mainpage/MainPage'
+import Filters from '../components/filters/Filters'
 
 class Home extends Component {
 
-    constructor(props) {
+    constructor(props){
         super(props)
-        this.toggle = this.toggle.bind(this)
         this.state = {
-            activeTab: '',
-            nameReact: 'React',
-            nameRedux: 'Redux',
-            nameUdacity: 'Udacity'
+            comments:[],
+            categories:['React', 'Redux', 'Udacity']
         }
     }
 
-    toggle(tab) {
-        if (this.state.activeTab !== tab) {
-            this.setState({
-                activeTab: tab
-            })
-        }
+    componentDidMount(){
+        const comments = this.getComments()
+        const categories = this.getCategories()
+        this.setState({comments, categories})
     }
+
     render() {
-        const { activeTab, nameReact, nameRedux, nameUdacity } = this.state
+        const { comments, categories } = this.state
         return (
             <Fragment>
-                <Nav>
-                    <Tab name={nameReact} activeTab={activeTab} toggle={this.toggle}/>
-                    <Tab name={nameRedux} activeTab={activeTab} toggle={this.toggle}/>
-                    <Tab name={nameUdacity} activeTab={activeTab} toggle={this.toggle}/>
-                </Nav>
-                <TabContent activeTab={this.state.activeTab}>
-                    <TabPane tabId="1">
-                    </TabPane>
-                    <TabPane tabId="2">
-                    </TabPane>
-                    <TabPane tabId="3">
-                    </TabPane>
-                </TabContent>
+                <Filters categories={categories}/>
+                <MainPage comments={comments}/>
             </Fragment>
         )
+    }
+
+    async getComments(){
+
+    }
+
+    async getCategories(){
+
     }
 }
 

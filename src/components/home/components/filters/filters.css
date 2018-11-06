@@ -1,0 +1,12 @@
+.filters-place{
+    background: linear-gradient(rgba(7, 138, 224, 0.795), blue);
+    width:100%;
+    height:10rem;
+}
+
+.buttons-filters{
+    width:5rem;
+    height:5rem;
+    background-color: black;
+    color:white;
+}
