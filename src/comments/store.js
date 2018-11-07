@@ -1,9 +1,3 @@
-import { List, Map, Record } from 'immutable'
+import { createStore } from "redux";
 
-const store = Record({
-    list: List(),
-    loading: false,
-    comment: Map()
-})()
 
-export { store }

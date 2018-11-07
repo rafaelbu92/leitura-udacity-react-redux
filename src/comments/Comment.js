@@ -15,10 +15,6 @@ class Comment {
         this.voteScore = voteScore
     }
 
-    get date() {
-        return moment(this.timestamp).format(getFormatDate(true))
-    }
-
 }
 
 export default Comment

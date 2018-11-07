@@ -1,40 +1,31 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import MainPage from '../components/mainpage/MainPage'
 import Filters from '../components/filters/Filters'
+import { Navbar } from 'reactstrap'
+import { connect } from 'react-redux'
+import * as backAPI from '../../../resources/backAPI'
 
 class Home extends Component {
 
-    constructor(props){
-        super(props)
-        this.state = {
-            comments:[],
-            categories:['React', 'Redux', 'Udacity']
-        }
-    }
-
     componentDidMount(){
-        const comments = this.getComments()
-        const categories = this.getCategories()
-        this.setState({comments, categories})
+        console.log(this.props)
     }
 
     render() {
-        const { comments, categories } = this.state
         return (
-            <Fragment>
-                <Filters categories={categories}/>
-                <MainPage comments={comments}/>
-            </Fragment>
+            <Navbar>
+                <div></div>
+            </Navbar>
         )
     }
 
-    async getComments(){
-
-    }
-
-    async getCategories(){
-
-    }
 }
 
-export default Home
+const mapDispatchToProps = dispatch => ({
+    listOfCategories: () => dispatch(backAPI.getAllCategories())
+  })
+
+const mapStateToProps = (state, props) => ({
+    listOfCategories: state.listOfCategories
+  })
+export default connect(mapDispatchToProps, mapStateToProps)(Home)

@@ -19,7 +19,7 @@ Filters.defaultProps = {
     categories: []
 }
 
-Filters.PropTypes = {
+Filters.prototype = {
     categories: PropTypes.array.isRequired
 }
 

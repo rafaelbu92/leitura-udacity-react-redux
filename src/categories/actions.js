@@ -1,8 +1,8 @@
-import { actions } from 'constants/ActionTypes'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
-import { createAction } from 'utils/actions'
+const CATEGORIES_GET_ALL = 'CATEGORIES_GET_ALL'
 
-const requestGetAll = createAction(actions.CATEGORIES_REQUEST_GET_ALL)
-const getAll = createAction(actions.CATEGORIES_GET_ALL)
+const getAll = { type: CATEGORIES_GET_ALL }
 
-export { getAll, requestGetAll }
+export { getAll }

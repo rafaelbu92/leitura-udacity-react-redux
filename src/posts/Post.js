@@ -16,16 +16,6 @@ class Post {
         this.voteScore = voteScore
     }
 
-    get date() {
-        return moment(this.timestamp).format(getFormatDate(true))
-    }
-
-    get resume() {
-        const FROM = 0
-        const TO = 255
-        return this.body.substring(FROM, TO)
-    }
-
 }
 
 export default Post
