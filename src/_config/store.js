@@ -1,7 +1,7 @@
 import { createStore } from 'redux'
 
-const categoriesStore = createStore({
+const store =  createStore({
     listOfCategories: []
 })
 
-export { categoriesStore }
+export default store

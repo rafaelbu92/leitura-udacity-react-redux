@@ -1,4 +1,4 @@
-const api = "http://localhost:3001/"
+const api = 'http://localhost:3001/'
 
 
 // Generate a unique token for storing your bookshelf data on the backend server.
@@ -11,11 +11,14 @@ const headers = {
     'Authorization': token
 }
 
-export const getAllCategories = () =>
-    fetch(`${api}/categories`, { headers })
+export const getAllCategories = () => {
+    return fetch(`${api}categories`, { headers })
         .then(res => res.json())
         .then(({ categories }) => {
             return categories
         })
-        .catch(error => console.log("Fail to connect", error))
+    }
+
+
+
 

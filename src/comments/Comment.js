@@ -1,6 +1,4 @@
-import moment from 'moment'
 
-import { getFormatDate } from 'utils/date'
 
 class Comment {
 

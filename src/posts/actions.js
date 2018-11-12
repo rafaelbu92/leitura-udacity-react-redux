@@ -9,6 +9,7 @@ const POSTS_NEW_COMMENT = 'POSTS_NEW_COMMENT'
 const POSTS_REMOVE_COMMENT = 'POSTS_REMOVE_COMMENT'
 
 
+const save = {type:POSTS_SAVE}
 const edit = {type:POSTS_EDIT}
 const vote = {type:POSTS_VOTE}
 const remove = {type:POSTS_REMOVE}

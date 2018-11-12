@@ -1,31 +1,30 @@
 import React, { Component } from 'react'
-import MainPage from '../components/mainpage/MainPage'
-import Filters from '../components/filters/Filters'
 import { Navbar } from 'reactstrap'
 import { connect } from 'react-redux'
-import * as backAPI from '../../../resources/backAPI'
+import { bindActionCreators } from 'redux'
+import {getAll} from 'categories/actions'
 
 class Home extends Component {
-
-    componentDidMount(){
-        console.log(this.props)
-    }
-
     render() {
+        console.log(this.props)
         return (
             <Navbar>
-                <div></div>
+                <div onClick={this.props.getAll}>hello</div>
+                {this.props.category.map((i,index) => (<div key={index}>{i}</div>))}
             </Navbar>
         )
     }
 
 }
 
-const mapDispatchToProps = dispatch => ({
-    listOfCategories: () => dispatch(backAPI.getAllCategories())
-  })
+function mapStateToProps(state){
+    return {
+        category: state.category
+    }
+}
 
-const mapStateToProps = (state, props) => ({
-    listOfCategories: state.listOfCategories
-  })
-export default connect(mapDispatchToProps, mapStateToProps)(Home)
+function mapDispatchToProps(dispatch){
+    return bindActionCreators({ getAll }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

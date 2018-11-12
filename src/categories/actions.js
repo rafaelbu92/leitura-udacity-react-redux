@@ -1,8 +1,18 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import * as BackAPI from 'resources/backAPI'
 
 const CATEGORIES_GET_ALL = 'CATEGORIES_GET_ALL'
 
-const getAll = { type: CATEGORIES_GET_ALL }
+const getAllCategories = () => {
+    let result = new Promise(BackAPI.getAllCategories()).resolve()
+    return result
+}
 
-export { getAll }
+export function getAll() {
+    return {
+        type: CATEGORIES_GET_ALL,
+        payload: getAllCategories()
+    }
+}
+
+
+
