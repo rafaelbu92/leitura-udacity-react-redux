@@ -17,7 +17,7 @@ export const getAllCategories = () => {
         .then(({ categories }) => {
             return categories
         })
-    }
+}
 
 
 
