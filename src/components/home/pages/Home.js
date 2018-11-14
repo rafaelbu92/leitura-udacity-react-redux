@@ -1,23 +1,29 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Navbar } from 'reactstrap'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { getAll } from 'categories/actions'
-import PropTypes from 'prop-types'
 
 class Home extends Component {
     render() {
+        console.log(this.props)
         return (
-            <Navbar>
-                <div onClick={this.props.getAll}>hello</div>
-                <div>
-                    {this.props.value.categories && this.props.value.categories.map((element, index) => (
+        <div>
+            <Fragment>
+                <div onClick={this.props.getAll}>
+                    hello
+                </div>
+            </Fragment>
+            <Fragment>
+                <Navbar>
+                    {this.props.value && this.props.value.map((element, index) => (
                         <div key={index}>
                             {element.name}
                         </div>
                     ))}
-                </div>
-            </Navbar>
+                </Navbar>
+            </Fragment>
+        </div>
         )
     }
 
