@@ -5,11 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { Provider } from 'react-redux'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import categoryReducer from 'categories/reducer'
+import postReducer from 'posts/reducer'
 import thunk from 'redux-thunk'
 
 
 const reducers = combineReducers({
-    category: categoryReducer
+    categories: categoryReducer,
+    posts: postReducer
 })
 
 
