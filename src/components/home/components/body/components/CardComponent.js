@@ -6,13 +6,12 @@ import './cardscomponent.scss'
 
 class CardComponent extends Component {
     render() {
-        console.log('card', this.props.value)
         return (
             <Form>
                 <FormGroup>
                     <ol>
-                        {this.props.value && this.props.value.map((element, key) =>
-                            <li className="list-cards" id={key}>
+                        {this.props.value.length ? (this.props.value.map((element, index) =>
+                            <li key={index} className="list-cards">
                                 <div className="cards-of-posts">
                                     <div className="post-time">{element.timestamp}</div>
                                     <div className="post-author">{element.author}</div>
@@ -20,7 +19,7 @@ class CardComponent extends Component {
                                     <div className="post-body">{element.body}</div>
                                 </div>
                             </li>
-                        )}
+                        )):(<div className="cards-of-posts">There are no posts of this category available. You can be the first one to post something in this category :D</div>)}
                     </ol>
                 </FormGroup>
             </Form>
@@ -28,8 +27,6 @@ class CardComponent extends Component {
     }
 
 }
-
-
 
 function mapStateToProps(state){
     return {

@@ -14,9 +14,9 @@ const POSTS_GET_ALL_BY_CATEGORY = 'POSTS_GET_ALL_BY_CATEGORY'
 // const vote = {type:POSTS_VOTE}
 // const remove = {type:POSTS_REMOVE}
 
-function getAll() {
+function getAllPosts() {
     return disptach => {
-        BackAPI.getAll().then(
+        BackAPI.getAllPosts().then(
             resp => disptach({
                 type: POSTS_GET_ALL,
                 payload: resp
@@ -25,18 +25,20 @@ function getAll() {
     }
 }
 
-function getByCategory(category) {
+function getPostsByCategory(category) {
+    console.log('action', category)
     return disptach => {
-        BackAPI.getByCategory(category).then(
-            resp => disptach({
-                type: POSTS_GET_ALL_BY_CATEGORY,
+        BackAPI.getPostsByCategory(category).then( resp => {
+            console.log(resp)
+            disptach({
+                type: 'POSTS_GET_ALL_BY_CATEGORY',
                 payload: resp
-            }
-            ))
+            })
+          })
     }
-}
+  }
 
-export { getAll, getByCategory }
+export { getAllPosts, getPostsByCategory }
 
 // const getAllByCategory = {type:POSTS_GET_ALL_BY_CATEGORY}
 // const newComment = {type:POSTS_NEW_COMMENT}
