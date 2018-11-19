@@ -5,4 +5,4 @@ const history = createBrowserHistory({
     forceRefresh: false
 })
 
-export { history }
+export  {history}

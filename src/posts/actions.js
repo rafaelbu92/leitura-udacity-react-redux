@@ -3,8 +3,7 @@ import * as BackAPI from 'resources/backPostAPI'
 // const POSTS_SAVE = 'POSTS_SAVE'
 // const POSTS_VOTE = 'POSTS_VOTE'
 // const POSTS_REMOVE = 'POSTS_REMOVE'
-const POSTS_GET_ALL = 'POSTS_GET_ALL'
-const POSTS_GET_ALL_BY_CATEGORY = 'POSTS_GET_ALL_BY_CATEGORY'
+// const POSTS_GET_ALL = 'POSTS_GET_ALL'
 // const POSTS_NEW_COMMENT = 'POSTS_NEW_COMMENT'
 // const POSTS_REMOVE_COMMENT = 'POSTS_REMOVE_COMMENT'
 
@@ -16,27 +15,25 @@ const POSTS_GET_ALL_BY_CATEGORY = 'POSTS_GET_ALL_BY_CATEGORY'
 
 function getAllPosts() {
     return disptach => {
-        BackAPI.getAllPosts().then(
-            resp => disptach({
-                type: POSTS_GET_ALL,
+        BackAPI.getAllPosts().then( resp => {
+            disptach({
+                type: 'POSTS_GET_ALL',
                 payload: resp
-            }
-            ))
+            })
+        })
     }
 }
 
 function getPostsByCategory(category) {
-    console.log('action', category)
     return disptach => {
         BackAPI.getPostsByCategory(category).then( resp => {
-            console.log(resp)
             disptach({
                 type: 'POSTS_GET_ALL_BY_CATEGORY',
                 payload: resp
             })
-          })
+        })
     }
-  }
+}
 
 export { getAllPosts, getPostsByCategory }
 

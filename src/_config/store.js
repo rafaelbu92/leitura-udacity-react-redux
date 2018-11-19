@@ -1,7 +1,29 @@
-import { createStore } from 'redux'
+import thunk from 'redux-thunk'
+import { applyMiddleware, compose, createStore } from 'redux'
+import { routerMiddleware, connectRouter } from 'connected-react-router'
 
-const store =  createStore({
-    listOfCategories: []
-})
+import {reducers} from './reducers'
+import {history} from './history'
 
-export default store
+import { Map } from 'immutable'
+
+const initialState = Map({})
+const enhancers = []
+const middleware = [
+    routerMiddleware(history),
+    thunk
+]
+
+const store = createStore(
+    connectRouter(history)(reducers),
+    initialState,
+    compose(
+      applyMiddleware(
+        ...middleware,
+        ...enhancers
+      ),
+    ),
+  )
+
+
+export {store}

@@ -1,16 +1,22 @@
 import React from 'react'
 import { Route, Switch } from 'react-router'
-import history from './history'
 import { Provider } from 'react-redux'
-import { store } from './store'
+import {ConnectedRouter} from 'connected-react-router/immutable'
+
+
 import { combineLinkedRoutes, combineRoutes } from 'utils/routes'
-import { ConnectedRouter } from 'connected-react-router/lib/immutable'
+import  {newpostRoutes} from 'components/newpost/routes'
+import {appRoutes} from 'containers/routes'
+
+
+import {history} from './history'
+import {store} from './store'
 
 
 const systemRoutes = combineRoutes(
-
+    appRoutes,
+    newpostRoutes
 )
-
 
 const routes = combineLinkedRoutes(systemRoutes)
 

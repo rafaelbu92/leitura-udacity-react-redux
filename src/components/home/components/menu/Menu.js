@@ -8,19 +8,18 @@ import  { getPostsByCategory }  from 'posts/actions'
 
 class Menu extends Component {
     render() {
-        console.log(this.props)
         return (
             <div className="menu-main">
                 <div className="group-button">
                     <Button onClick={() => {
                         this.props.getPostsByCategory('react')
-                        }} color="secondary" className="react-button">React</Button>
+                    }} color="secondary" className="react-button">React</Button>
                     <Button onClick={() => {
                         this.props.getPostsByCategory('redux')
-                        }} color="info" className="redux-button">Redux</Button>
+                    }} color="info" className="redux-button">Redux</Button>
                     <Button onClick={() => {
                         this.props.getPostsByCategory('udacity')
-                        }} color="primary" className="udacity-button">Udacity</Button>
+                    }} color="primary" className="udacity-button">Udacity</Button>
                 </div>
             </div>
         )

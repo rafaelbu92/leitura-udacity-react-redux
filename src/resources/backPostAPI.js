@@ -14,9 +14,6 @@ const headers = {
 const getAllPosts = () => {
     return fetch(`${api}posts`, { headers })
         .then(res => res.json())
-        .then(({ posts }) => {
-            return posts
-        })
 }
 
 const getPostsByCategory = category =>{
