@@ -14,13 +14,14 @@ class CardComponent extends Component {
         this.state = {
             isOpen: false
         }
+        this.toggle = this.toggle.bind(this)
     }
 
     componentDidMount(){
         this.props.initialPosts()
     }
 
-    toggle = () => {
+    toggle(){
         this.setState(({ isOpen }) => ({ isOpen: !isOpen }))
     }
 

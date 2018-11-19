@@ -18,12 +18,12 @@ const store = createStore(
     connectRouter(history)(reducers),
     initialState,
     compose(
-      applyMiddleware(
-        ...middleware,
-        ...enhancers
-      ),
+        applyMiddleware(
+            ...middleware,
+            ...enhancers
+        ),
     ),
-  )
+)
 
 
 export {store}
