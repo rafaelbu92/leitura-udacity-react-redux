@@ -2,7 +2,7 @@ import App from 'containers/App'
 
 
 const appRoutes = [
-    { component: App, name: 'main-page', path: '/' }
+    { component: App, name: 'main', path: '/' }
 ]
 
 export {appRoutes}

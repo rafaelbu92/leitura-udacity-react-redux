@@ -8,10 +8,13 @@
     .list-cards{
         list-style-type: none;
         .cards-of-posts{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
             margin: 1rem auto 3rem auto;
             border-radius: 0.2rem;
             width: 80%;
-            height: 20rem;
+            min-height: 20rem;
             background: white;
             border: 1px solid #B4B4B3;
             color: #7A7A7A;

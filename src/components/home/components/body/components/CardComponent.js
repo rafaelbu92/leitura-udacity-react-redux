@@ -12,7 +12,7 @@ class CardComponent extends Component {
     constructor(){
         super()
         this.state = {
-            isOpen: false
+            isOpen: []
         }
         this.toggle = this.toggle.bind(this)
     }
@@ -21,12 +21,26 @@ class CardComponent extends Component {
         this.props.initialPosts()
     }
 
-    toggle(){
-        this.setState(({ isOpen }) => ({ isOpen: !isOpen }))
+    componentDidUpdate() {
+        if (this.state.isOpen.length < this.props.value.length) {
+            const isOpen = [].concat(this.props.value.map(() => false))
+            this.setState({ isOpen })
+        }
+    }
+
+    toggle(targetIndex){
+        this.setState(({ isOpen }) => {
+            const newIsOpen = [].concat(isOpen).map((item, index) => {
+                if (targetIndex === index) {
+                    return !item
+                }
+                return item
+            })
+            return { isOpen: newIsOpen }
+        })
     }
 
     render() {
-        const { isOpen } = this.state
         return (
             <div className="container">
                 <Form>
@@ -44,14 +58,17 @@ class CardComponent extends Component {
                                         <div className="author-info-grp">
                                             <div className="post-author-title">posted by:</div>
                                             <div className="post-author-value">{element.author}</div>
-                                            <div className="post-time-value">{element.timestamp}</div>
+                                            <div format="DD/MM/YYYY" className="post-time-value">{element.timestamp}</div>
                                         </div>
                                         <div className="post-body-value">{element.body}</div>
-                                        <Button className="comments-button" color="secondary" onClick={this.toggle}>Comments</Button>
-                                        <Collapse isOpen={isOpen}>
+                                        <Button className="comments-button" color="secondary" onClick={() => this.toggle(index)}>Comments</Button>
+                                        <Collapse isOpen={this.state.isOpen[index]}>
                                             <Card>
                                                 <CardBody>
-                                                    comments
+                                                    <p>aaaaaaaaaaaaaa</p>
+                                                    <p>aaaaaaa</p>
+                                                    <p>aaaaaaaaaaaa</p>
+                                                    <p>aaaaaaaaaa</p>
                                                 </CardBody>
                                             </Card>
                                         </Collapse>

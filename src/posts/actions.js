@@ -1,4 +1,5 @@
 import * as BackAPI from 'resources/backPostAPI'
+import {history} from '_config/history'
 // const POSTS_EDIT = 'POSTS_EDIT'
 // const POSTS_SAVE = 'POSTS_SAVE'
 // const POSTS_VOTE = 'POSTS_VOTE'
@@ -35,7 +36,19 @@ function getPostsByCategory(category) {
     }
 }
 
-export { getAllPosts, getPostsByCategory }
+function savePost(post) {
+    return disptach => {
+        BackAPI.savePost(post).then( resp => {
+            disptach({
+                type: 'POSTS_SAVE',
+                payload: resp
+            })
+            history.push('/')
+        })
+    }
+}
+
+export { getAllPosts, getPostsByCategory, savePost }
 
 // const getAllByCategory = {type:POSTS_GET_ALL_BY_CATEGORY}
 // const newComment = {type:POSTS_NEW_COMMENT}

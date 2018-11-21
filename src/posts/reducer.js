@@ -6,6 +6,8 @@ export default function (state = INITIAL_STATE, action) {
         return {...state, value: action.payload}
     case 'POSTS_GET_ALL_BY_CATEGORY':
         return {...state, value: action.payload}
+    case 'POSTS_SAVE':
+        return {...state, value: action.payload}
     default:
         return state
     }

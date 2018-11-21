@@ -20,4 +20,14 @@ const getPostsByCategory = category =>{
     return fetch(`${api}${category}/posts`, { headers })
         .then((res) => res.json())}
 
-export { getAllPosts, getPostsByCategory }
+const savePost = (post) =>
+    fetch(`${api}posts`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify( {...post, timestamp:new Date().toLocaleString()} )
+    }).then(res => res.json())
+
+export { getAllPosts, getPostsByCategory, savePost }
