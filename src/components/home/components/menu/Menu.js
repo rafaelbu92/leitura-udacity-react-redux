@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import './menu.scss'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import  { getPostsByCategory }  from 'posts/actions'
+import  { getPostsByCategory, getAllPosts }  from 'posts/actions'
 
 
 class Menu extends Component {
@@ -12,11 +12,14 @@ class Menu extends Component {
             <div className="menu-main">
                 <div className="group-button">
                     <Button onClick={() => {
+                        this.props.getAllPosts()
+                    }} color="primary" className="udacity-button">Todos</Button>
+                    <Button onClick={() => {
                         this.props.getPostsByCategory('react')
-                    }} color="secondary" className="react-button">React</Button>
+                    }} color="primary" className="react-button">React</Button>
                     <Button onClick={() => {
                         this.props.getPostsByCategory('redux')
-                    }} color="info" className="redux-button">Redux</Button>
+                    }} color="primary" className="redux-button">Redux</Button>
                     <Button onClick={() => {
                         this.props.getPostsByCategory('udacity')
                     }} color="primary" className="udacity-button">Udacity</Button>
@@ -28,7 +31,7 @@ class Menu extends Component {
 }
 
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({ getPostsByCategory }, dispatch)
+    return bindActionCreators({ getPostsByCategory, getAllPosts }, dispatch)
 }
 
 export default connect(undefined, mapDispatchToProps)(Menu)

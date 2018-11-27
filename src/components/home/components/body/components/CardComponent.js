@@ -4,7 +4,8 @@ import {Link} from 'react-router-dom'
 import { connect } from 'react-redux'
 import './cardscomponent.scss'
 import  { getAllPosts }  from 'posts/actions'
-import { routes } from '../../../../../_config/routes'
+import { removePost, editPost } from '../../../../../posts/actions'
+
 
 
 class CardComponent extends Component {
@@ -17,8 +18,9 @@ class CardComponent extends Component {
         this.toggle = this.toggle.bind(this)
     }
 
-    componentDidMount(){
-        this.props.initialPosts()
+
+    deletePost(id){
+        this.props.deletePostAction(id)
     }
 
     componentDidUpdate() {
@@ -41,34 +43,40 @@ class CardComponent extends Component {
     }
 
     render() {
+        console.log(this.props)
         return (
             <div className="container">
                 <Form>
                     <div className="new-post-button">
-                        <Link to={routes.createPost}>
-                            <Button color="secondary">Create new post</Button>
-                        </Link>
+                    <Link to={'/posts/create'}>
+                        <Button color="secondary">Create new post</Button>
+                    </Link>
                     </div>
                     <FormGroup>
                         <ol>
                             {this.props.value.length ? (this.props.value.map((element, index) =>
                                 <li key={index} className="list-cards">
                                     <div className="cards-of-posts">
+                                        <div className="edit-post-button">
+                                        <Link to={`/posts/${element.id}`}>
+                                            <Button size="sm" outline color="primary">detail</Button>
+                                        </Link>
+                                        </div>
+                                        <Button onClick={() => this.deletePost(element.id)} className="delete-post-button" size="sm" outline color="primary">
+                                            delete
+                                        </Button>
                                         <div className="post-title-value">{element.title}</div>
                                         <div className="author-info-grp">
                                             <div className="post-author-title">posted by:</div>
                                             <div className="post-author-value">{element.author}</div>
-                                            <div format="DD/MM/YYYY" className="post-time-value">{element.timestamp}</div>
+                                            <div className="post-time-value">{element.timestamp}</div>
                                         </div>
                                         <div className="post-body-value">{element.body}</div>
                                         <Button className="comments-button" color="secondary" onClick={() => this.toggle(index)}>Comments</Button>
                                         <Collapse isOpen={this.state.isOpen[index]}>
                                             <Card>
                                                 <CardBody>
-                                                    <p>aaaaaaaaaaaaaa</p>
-                                                    <p>aaaaaaa</p>
-                                                    <p>aaaaaaaaaaaa</p>
-                                                    <p>aaaaaaaaaa</p>
+                                                    {element.body}
                                                 </CardBody>
                                             </Card>
                                         </Collapse>
@@ -84,9 +92,12 @@ class CardComponent extends Component {
 
 }
 
+
 function mapDispatchToProps(dispatch){
     return {
-        initialPosts: () => dispatch(getAllPosts())
+        initialPostsAction: () => dispatch(getAllPosts()),
+        deletePostAction:(id) =>  dispatch(removePost(id)),
+        editPostAction:(id, post) =>  dispatch(editPost(id, post))
     }
 }
 

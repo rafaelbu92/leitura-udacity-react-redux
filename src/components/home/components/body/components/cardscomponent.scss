@@ -19,6 +19,18 @@
             border: 1px solid #B4B4B3;
             color: #7A7A7A;
             box-shadow: 0rem 0.3rem 0.5rem #888888;
+            .edit-post-button{
+                width:7%;
+                height:30px;
+                text-align: auto;
+                margin:0rem 1rem 0rem auto;
+            }
+            .delete-post-button{
+                width:7%;
+                height:30px;
+                text-align: auto;
+                margin:0rem 1rem 0rem auto;
+            }
             .author-info-grp{
                 display:flex;
                 right:1rem;

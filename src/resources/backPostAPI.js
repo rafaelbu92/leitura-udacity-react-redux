@@ -11,9 +11,30 @@ const headers = {
     'Authorization': 'auth'
 }
 
+const editPost = (id, post) => {
+    return fetch(`${api}posts/${id}`,{
+        method: 'PUT',
+        headers: {
+            post,
+            ...headers,
+            'Content-Type': 'application/json'
+        }
+    })
+}
+
 const getAllPosts = () => {
     return fetch(`${api}posts`, { headers })
         .then(res => res.json())
+}
+
+const removePost = (id) => {
+    return fetch(`${api}posts/${id}`, {
+        method: 'DELETE',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        }
+    })
 }
 
 const getPostsByCategory = category =>{
@@ -27,7 +48,21 @@ const savePost = (post) =>
             ...headers,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify( {...post, timestamp:new Date().toLocaleString()} )
-    }).then(res => res.json())
+        body: JSON.stringify( {...post, timestamp:new Date().toLocaleString(), id:Math.random().toString(36).substr(-8)
+        } )
+    }).then(res => (
+        res.json()
+    ))
 
-export { getAllPosts, getPostsByCategory, savePost }
+const getPostById = (id) =>
+    fetch(`${api}posts/${id}`, {
+        method: 'GET',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        }} )
+    .then(res => (
+        res.json()
+    ))
+
+export { getAllPosts, getPostsByCategory, savePost, removePost, editPost, getPostById }

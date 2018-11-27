@@ -1,6 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Routes from '_config/routes'
+import { Provider } from 'react-redux'
+import App from 'containers/App'
 
-ReactDOM.render(<Routes/>, document.getElementById('root'))
+
+
+import {store} from '_config/store'
+
+
+ReactDOM.render(
+    <Provider store={store}>
+        <App/>
+    </Provider>,
+    document.getElementById('root')
+)

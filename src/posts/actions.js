@@ -1,5 +1,4 @@
 import * as BackAPI from 'resources/backPostAPI'
-import {history} from '_config/history'
 // const POSTS_EDIT = 'POSTS_EDIT'
 // const POSTS_SAVE = 'POSTS_SAVE'
 // const POSTS_VOTE = 'POSTS_VOTE'
@@ -14,11 +13,33 @@ import {history} from '_config/history'
 // const vote = {type:POSTS_VOTE}
 // const remove = {type:POSTS_REMOVE}
 
+function removePost(id) {
+    return disptach => {
+        BackAPI.removePost(id).then( resp => {
+            disptach({
+                type: 'POSTS_REMOVE',
+                payload: resp
+            })
+        })
+    }
+}
+
 function getAllPosts() {
     return disptach => {
         BackAPI.getAllPosts().then( resp => {
             disptach({
                 type: 'POSTS_GET_ALL',
+                payload: resp
+            })
+        })
+    }
+}
+
+function getPostById(id){
+    return disptach => {
+        BackAPI.getPostById(id).then( resp => {
+            disptach({
+                type: 'POSTS_GET_BY_ID',
                 payload: resp
             })
         })
@@ -43,12 +64,22 @@ function savePost(post) {
                 type: 'POSTS_SAVE',
                 payload: resp
             })
-            history.push('/')
         })
     }
 }
 
-export { getAllPosts, getPostsByCategory, savePost }
+function editPost(id, post) {
+    return disptach => {
+        BackAPI.editPost(id, post).then( resp => {
+            disptach({
+                type: 'POSTS_EDIT',
+                payload: resp
+            })
+        })
+    }
+}
+
+export { getAllPosts, getPostsByCategory, savePost, removePost, editPost, getPostById }
 
 // const getAllByCategory = {type:POSTS_GET_ALL_BY_CATEGORY}
 // const newComment = {type:POSTS_NEW_COMMENT}
