@@ -37,6 +37,17 @@ const removePost = (id) => {
     })
 }
 
+const votePost = (id, option) => {
+    return fetch(`${api}posts/${id}`, {
+        method: 'POST',
+        headers: {
+            option,
+            ...headers,
+            'Content-Type': 'application/json'
+        }
+    })
+}
+
 const getPostsByCategory = category =>{
     return fetch(`${api}${category}/posts`, { headers })
         .then((res) => res.json())}
@@ -61,8 +72,8 @@ const getPostById = (id) =>
             ...headers,
             'Content-Type': 'application/json'
         }} )
-    .then(res => (
-        res.json()
-    ))
+        .then(res => (
+            res.json()
+        ))
 
-export { getAllPosts, getPostsByCategory, savePost, removePost, editPost, getPostById }
+export { getAllPosts, getPostsByCategory, savePost, removePost, editPost, getPostById, votePost }

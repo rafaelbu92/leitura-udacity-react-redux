@@ -1,9 +1,11 @@
-const INITIAL_STATE = {value: []}
+const INITIAL_STATE = {value: [], post: {}}
 
 export default function (state = INITIAL_STATE, action) {
     switch(action.type){
+    case 'POSTS_VOTE':
+        return {...state, post: action.payload}
     case 'POSTS_GET_BY_ID':
-        return {...state, value: action.payload}
+        return {...state, post: action.payload}
     case 'POSTS_GET_ALL':
         return {...state, value: action.payload}
     case 'POSTS_GET_ALL_BY_CATEGORY':

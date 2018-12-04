@@ -1,7 +1,7 @@
 import * as BackAPI from 'resources/backCategoryAPI'
 
 
-export function getAllCategories() {
+function getAllCategories() {
     return disptach => {
         BackAPI.getAllCategories().then(
             resp => disptach({
@@ -11,6 +11,8 @@ export function getAllCategories() {
         )
     }
 }
+
+export { getAllCategories }
 
 
 

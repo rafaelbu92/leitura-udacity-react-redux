@@ -52,12 +52,12 @@ class NewPost extends Component {
     }
     render() {
         if (this.state.postPublished) {
-            return (<Redirect to={"/"} />)
+            return (<Redirect to={'/'} />)
         } else {
             return(<Fragment>
                 <div className="header-post">
                     Crie seu POST
-                    </div>
+                </div>
                 <div className="container-new-post">
                     <Form onSubmit={this.submitForm}>
                         <FormGroup>
@@ -84,7 +84,7 @@ class NewPost extends Component {
                             </Input>
                         </FormGroup>
                         <Button type="submit">Criar</Button>
-                        <Link to={"/"}>
+                        <Link to={'/'}>
                             <Button>Cancelar</Button>
                         </Link>
                     </Form>

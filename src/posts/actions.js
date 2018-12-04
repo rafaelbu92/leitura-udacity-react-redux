@@ -13,6 +13,17 @@ import * as BackAPI from 'resources/backPostAPI'
 // const vote = {type:POSTS_VOTE}
 // const remove = {type:POSTS_REMOVE}
 
+function votePost(id, option){
+    return disptach => {
+        BackAPI.votePost(id, option).then( resp => {
+            disptach({
+                type: 'POSTS_VOTE',
+                payload: resp
+            })
+        })
+    }
+}
+
 function removePost(id) {
     return disptach => {
         BackAPI.removePost(id).then( resp => {
@@ -79,7 +90,7 @@ function editPost(id, post) {
     }
 }
 
-export { getAllPosts, getPostsByCategory, savePost, removePost, editPost, getPostById }
+export { getAllPosts, getPostsByCategory, savePost, removePost, editPost, getPostById, votePost }
 
 // const getAllByCategory = {type:POSTS_GET_ALL_BY_CATEGORY}
 // const newComment = {type:POSTS_NEW_COMMENT}

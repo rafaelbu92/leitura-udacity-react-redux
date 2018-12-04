@@ -11,13 +11,19 @@ const headers = {
     'Authorization': token
 }
 
-export const getAllCategories = () => {
-    return fetch(`${api}categories`, { headers })
-        .then(res => res.json())
-        .then(({ categories }) => {
-            return categories
-        })
+const getAllCategories = () => {
+    return fetch(`${api}categories`, {
+        method: 'GET',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        }
+    }).then(res => (
+        res.json()
+    ))
 }
+
+export { getAllCategories }
 
 
 

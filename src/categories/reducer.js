@@ -1,6 +1,6 @@
 
 
-const INITIAL_STATE = {value: ['valor default']}
+const INITIAL_STATE = {value: []}
 
 export default function (state = INITIAL_STATE, action) {
     switch(action.type){
