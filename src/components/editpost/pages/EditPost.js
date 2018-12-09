@@ -12,45 +12,85 @@ class EditPost extends Component {
         super()
         this.state = {
             postEdited: false,
+            id: '',
             title: '',
             author: '',
             body: '',
-            category: ''
+            category: '',
+            timestamp: null,
+            voteScore: null,
+            deleted: undefined,
+            commentCounts: null
         }
         this.handleTitleChanges = this.handleTitleChanges.bind(this)
         this.handleAuthorChanges = this.handleAuthorChanges.bind(this)
         this.handleBodyChanges = this.handleBodyChanges.bind(this)
         this.handleCategoryChanges = this.handleCategoryChanges.bind(this)
-        this.submitForm = this.submitForm.bind(this)
+        this.submitEditedForm = this.submitEditedForm.bind(this)
     }
 
-    handleTitleChanges(event){
-        this.setState({title:event.target.value})
+    handleTitleChanges(event) {
+        this.setState({ title: event.target.value })
     }
 
-    handleAuthorChanges(event){
-        this.setState({author:event.target.value})
+    handleAuthorChanges(event) {
+        this.setState({ author: event.target.value })
     }
 
-    handleBodyChanges(event){
-        this.setState({body:event.target.value})
+    handleBodyChanges(event) {
+        this.setState({ body: event.target.value })
     }
 
-    handleCategoryChanges(event){
-        this.setState({category:event.target.value})
+    handleCategoryChanges(event) {
+        this.setState({ category: event.target.value })
     }
 
     componentDidMount(){
         this.props.getPostByIdAction(this.props.match.params.id)
     }
 
-    submitForm(event) {
+    submitEditedForm(event) {
+        console.log(this.state.id)
+        console.log(this.state)
         event.preventDefault()
-        this.props.editPostAction(this.state)
+        this.props.editPostAction(this.state.id, this.state)
         this.setState({ postEdited: true })
     }
+
+    update(edittedCategory){
+        this.setState(
+            {category: edittedCategory}
+        )
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState){
+        if(nextProps.post.title !== undefined){
+            if((prevState.title !== '' && nextProps.post.title !== prevState.title)
+                || (prevState.author !== '' && nextProps.post.author !== prevState.author)
+                || (prevState.body !== '' && nextProps.post.body !== prevState.body)
+                || (prevState.category !== '' && nextProps.post.category !== prevState.category)){
+                return{
+                    title:prevState.title,
+                    author:prevState.author,
+                    body:prevState.body,
+                    category:prevState.category
+                }
+            }
+            return{
+                id:nextProps.post.id,
+                timestamp:nextProps.post.timestamp,
+                title:nextProps.post.title,
+                author:nextProps.post.author,
+                body:nextProps.post.body,
+                category:nextProps.post.category,
+                commentCounts:nextProps.post.commentCounts,
+                voteScore:nextProps.post.voteScore
+            }
+        }
+
+    }
+
     render(){
-        console.log(this.props.post.title)
         if (this.state.postEdited) {
             return (<Redirect to={'/'} />)
         }else{
@@ -60,23 +100,36 @@ class EditPost extends Component {
                         edição do POST
                     </div>
                     <div className="container-detail-post">
-                        <Form  onSubmit={this.submitForm}>
+                        <Form onSubmit={this.submitEditedForm}>
                             <FormGroup>
-                                <Label>Título do post</Label>
-                                <Input onChange={this.handleTitleChanges}>{this.props.post.title}</Input>
+                                <Label>Título</Label>
+                                <Input type="text" onChange={this.handleTitleChanges} defaultValue={this.state.title}/>
                             </FormGroup>
                             <FormGroup>
                                 <Label>Autor</Label>
-                                <Input onChange={this.handleAuthorChanges}>{this.props.post.author}</Input>
+                                <Input type="text" onChange={this.handleAuthorChanges} defaultValue={this.state.author}/>
                             </FormGroup>
                             <FormGroup>
                                 <Label>Conteúdo do Post</Label>
-                                <Input onChange={this.handleAuthorChanges}>{this.props.post.body}</Input>
+                                <Input type="text" onChange={this.handleBodyChanges} defaultValue={this.state.body}/>
                             </FormGroup>
+                            <FormGroup>
+                                <Label>Categoria</Label>
+                                <Input
+                                    type="select"
+                                    name="select"
+                                    value={this.state.category}
+                                    onChange={(event) => this.update(event.target.value)}
+                                    >
+                                    <option value="react">React</option>
+                                    <option value="redux">Redux</option>
+                                    <option value="udacity">Udacity</option>
+                                </Input>
+                            </FormGroup>
+                            <Button type="submit">Finalizar edição</Button>
+                            <Link className="btn btn-secondary udacity-button" to={'/'}>Voltar</Link>
                         </Form>
-                        <Button type="submit">Finalizar edição</Button>
-                        <Link className="btn btn-secondary udacity-button" to={'/'}>Voltar</Link>
-                    </div>
+                      </div>
                 </Fragment>
             )
 

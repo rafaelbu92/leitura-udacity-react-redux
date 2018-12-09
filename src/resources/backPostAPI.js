@@ -18,8 +18,11 @@ const editPost = (id, post) => {
             post,
             ...headers,
             'Content-Type': 'application/json'
-        }
-    })
+        },
+        body: JSON.stringify( {...post})
+    }).then(res => (
+        res.json()
+    ))
 }
 
 const getAllPosts = () => {
@@ -40,8 +43,8 @@ const removePost = (id) => {
 const votePost = (id, option) => {
     return fetch(`${api}posts/${id}`, {
         method: 'POST',
+        body: JSON.stringify({option}),
         headers: {
-            option,
             ...headers,
             'Content-Type': 'application/json'
         }
