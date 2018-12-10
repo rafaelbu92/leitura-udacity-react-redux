@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from 'react'
-import { CardBody, Card, CardTitle, CardSubtitle, CardText, Collapse, Button } from 'reactstrap'
+import { CardBody, Card, CardTitle, CardSubtitle, Collapse, Button } from 'reactstrap'
 import { Link, Redirect} from 'react-router-dom'
 import './detailPost.scss'
 import { connect } from 'react-redux'
-import { getPostById } from '../../../posts/actions'
+import { getPostById, votePost } from '../../../posts/actions'
 import {getAllComments} from '../../../comments/actions'
 
+
+let timeout = null;
 
 class DetailPost extends Component {
 
@@ -40,8 +42,19 @@ class DetailPost extends Component {
         this.setState({category:event.target.value})
     }
 
+    votePost(id, option){
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+            this.props.votePostAction(id, option)
+            this.props.getPostByIdAction(id)
+
+        }, 250)
+    }
+
+
     componentDidMount(){
         this.props.getPostByIdAction(this.props.match.params.id)
+        this.props.getAllCommentsAction(this.props.match.params.id)
     }
 
     submitForm(event) {
@@ -58,23 +71,47 @@ class DetailPost extends Component {
             return(
                 <Fragment>
                     <div className="header-post">
-                        Detalhamento do POST
+                        Post Details
                     </div>
                     <div className="container-detail-post">
                         <Card>
+                            <Button onClick={() => this.votePost(this.props.post.id,'upVote')} className="delete-post-button" size="sm" outline color="primary">
+                                UpVote
+                            </Button>
+                            <Button onClick={() => this.votePost(this.props.post.id,'downVote')} className="delete-post-button" size="sm" outline color="primary">
+                                DownVote
+                            </Button>
                             <CardBody>
-                                <CardTitle>{this.props.post.author}</CardTitle>
-                                <CardSubtitle>{this.props.post.title}</CardSubtitle>
-                                <CardText>
-                                    <p>{this.props.post.body}</p>
-                                </CardText>
+                                <CardTitle>
+                                    <div>Title</div>
+                                </CardTitle>
+                                <CardTitle>{this.props.post.title}</CardTitle>
+                                <CardSubtitle>
+                                    <div>Author</div>
+                                </CardSubtitle>
+                                <CardSubtitle>{this.props.post.author}</CardSubtitle>
+                                <div>Body</div>
+                                <div>{this.props.post.body}</div>
+                                <div>Score votes</div>
+                                <div>{this.props.post.voteScore}</div>
+                                <div>Comment numbers</div>
+                                <div>{this.props.post.commentCount}</div>
                             </CardBody>
                         </Card>
-                        <Button className="comments-button" color="secondary" onClick={() => this.toggle()} onChange={this.showComments()}>Comments</Button>
+                        <Button className="comments-button" color="secondary" onClick={() => this.toggle()}>Comments</Button>
                             <Collapse isOpen={this.state.isOpen}>
                                 <Card>
                                     <CardBody>
-                                        <div>hello, can you hear me?</div>
+                                        <ol>
+                                            {this.props.comments.length ? this.props.comments.map((comment, index) =>
+                                                <li key={index} className="list-comments">
+                                                    <div>{comment.timestamp}</div>
+                                                    <div>{comment.author}</div>
+                                                    <div>{comment.body}</div>
+                                                    <div>{comment.voteScore}</div>
+                                                </li>
+                                            ):(<div className="list-comments"><div className="cards-of-posts">There are no commnets yet in this post :(</div></div>)}
+                                        </ol>
                                     </CardBody>
                                 </Card>
                             </Collapse>
@@ -95,22 +132,20 @@ class DetailPost extends Component {
         this.setState(({ isOpen }) => ({ isOpen: !isOpen }))
     }
 
-    showComments = () => {
-        console.log('comments')
-        this.props.getAllCommentsAction(this.state.id)
-    }
 }
 
 function mapDispatchToProps(dispatch){
     return {
         getPostByIdAction: (id) => dispatch(getPostById(id)),
-        getAllCommentsAction:(id) => dispatch(getAllComments(id))
+        getAllCommentsAction:(id) => dispatch(getAllComments(id)),
+        votePostAction:(id, option) => dispatch(votePost(id, option))
     }
 }
 
 function mapStateToProps(state){
     return {
-        post: state.posts.post
+        post: state.posts.value,
+        comments: state.comments.value
     }
 }
 

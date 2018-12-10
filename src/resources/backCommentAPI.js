@@ -12,6 +12,7 @@ const headers = {
 }
 
 const getAllComments = (id) => {
+    console.log(`${api}posts/${id}/comments`)
     return fetch(`${api}posts/${id}/comments`, {
         method: 'GET',
         headers: {

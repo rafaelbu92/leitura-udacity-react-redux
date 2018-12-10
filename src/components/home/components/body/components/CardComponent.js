@@ -8,7 +8,7 @@ import { removePost, editPost, getPostsByCategory, votePost } from '../../../../
 import { getAllCategories } from '../../../../../categories/actions'
 import { getAllComments } from '../../../../../comments/actions'
 
-
+let timeout = null
 
 class CardComponent extends Component {
 
@@ -19,8 +19,8 @@ class CardComponent extends Component {
     }
 
     votePost(id, option){
-        this.props.votePostAction(id, option)
-        this.props.initialPostsAction()
+        clearTimeout(timeout)
+        timeout = setTimeout(() => this.props.votePostAction(id, option), 250)
     }
 
     componentDidMount(){
@@ -33,7 +33,7 @@ class CardComponent extends Component {
         return (
             <Fragment>
                 <Link className="btn btn-primary udacity-button" to={`/`}>
-                    Todos
+                    All
                 </Link>
                 <div className="menu-main">
                     <div className="group-beuutton">
@@ -50,6 +50,7 @@ class CardComponent extends Component {
                 </div>
                 <div className="container">
                     <Form>
+                        <Button onClick={() => this.orderPosts()}>Order by vote numbers</Button>
                         <div className="new-post-button">
                             <Link className="btn btn-secondary udacity-button" to={'/posts/create'}>
                                 Create new post
@@ -75,6 +76,9 @@ class CardComponent extends Component {
                                                 DownVote
                                             </Button>
                                             <div className="post-title-value">{element.title}</div>
+                                            <div>number of comments</div>
+                                            <div>{element.commentCount}</div>
+                                            <div>vote numbers</div>
                                             <div>{element.voteScore}</div>
                                             <div className="author-info-grp">
                                                 <div className="post-author-title">posted by:</div>
@@ -93,7 +97,7 @@ class CardComponent extends Component {
         )
     }
 
-    showComments = (id) => {
+    orderPosts = () => {
         //this.props.getAllCommentsPerPostAction(id)
     }
 

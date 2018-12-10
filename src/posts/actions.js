@@ -1,35 +1,28 @@
 import * as BackAPI from 'resources/backPostAPI'
-// const POSTS_EDIT = 'POSTS_EDIT'
-// const POSTS_SAVE = 'POSTS_SAVE'
-// const POSTS_VOTE = 'POSTS_VOTE'
-// const POSTS_REMOVE = 'POSTS_REMOVE'
-// const POSTS_GET_ALL = 'POSTS_GET_ALL'
-// const POSTS_NEW_COMMENT = 'POSTS_NEW_COMMENT'
-// const POSTS_REMOVE_COMMENT = 'POSTS_REMOVE_COMMENT'
-
-
-// const save = {type:POSTS_SAVE}
-// const edit = {type:POSTS_EDIT}
-// const vote = {type:POSTS_VOTE}
-// const remove = {type:POSTS_REMOVE}
 
 function votePost(id, option){
-    return disptach => {
-        BackAPI.votePost(id, option).then( resp => {
-            disptach({
-                type: 'POSTS_VOTE',
-                payload: resp
-            })
+    return (disptach, getState) => {
+        BackAPI.votePost(id, option).then(resp => {
+            const { posts } = getState()
+            const allPosts = [].concat(posts.value)
+            const postIndex = allPosts.findIndex(post => post.id === resp.id)
+            if (postIndex >= 0) {
+                allPosts.splice(postIndex, 1, resp)
+                disptach({
+                    type: 'POSTS_VOTE',
+                    payload: { allPosts, post: resp }
+                })
+            }
         })
     }
 }
 
 function removePost(id) {
-    return disptach => {
-        BackAPI.removePost(id).then( resp => {
+    return (disptach, getState) => {
+        BackAPI.removePost(id).then(resp => {
             disptach({
                 type: 'POSTS_REMOVE',
-                payload: resp
+                payload: getState().posts.value.filter(post => post.id !== resp.id)
             })
         })
     }
@@ -92,9 +85,6 @@ function editPost(id, post) {
 
 export { getAllPosts, getPostsByCategory, savePost, removePost, editPost, getPostById, votePost }
 
-// const getAllByCategory = {type:POSTS_GET_ALL_BY_CATEGORY}
-// const newComment = {type:POSTS_NEW_COMMENT}
-// const removeComment = {type:POSTS_REMOVE_COMMENT}
 
 
 

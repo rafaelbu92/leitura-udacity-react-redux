@@ -146,7 +146,7 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state){
     return {
-        post: state.posts.post
+        post: state.posts.value
     }
 }
 

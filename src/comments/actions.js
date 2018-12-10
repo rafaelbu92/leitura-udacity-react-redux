@@ -1,16 +1,4 @@
 import * as BackAPI from 'resources/backCommentAPI'
-const COMMENTS_EDIT = 'COMMENTS_EDIT'
-const COMMENTS_REMOVE = 'COMMENTS_REMOVE'
-const COMMENTS_SAVE = 'COMMENTS_SAVE'
-const COMMENTS_VOTE = 'COMMENTS_VOTE'
-const COMMENTS_GET_ALL = 'COMMENTS_GET_ALL'
-
-
-const edit = { type: COMMENTS_EDIT }
-const remove = { type: COMMENTS_REMOVE }
-const save = { type: COMMENTS_SAVE }
-const vote = { type: COMMENTS_VOTE }
-const getAll = { type: COMMENTS_GET_ALL }
 
 function voteComment(id, option){
     return disptach => {
@@ -34,9 +22,9 @@ function deleteComment(id) {
     }
 }
 
-function getAllComments() {
+function getAllComments(id) {
     return disptach => {
-        BackAPI.getAllComments().then( resp => {
+        BackAPI.getAllComments(id).then( resp => {
             disptach({
                 type: 'COMMENTS_GET_ALL',
                 payload: resp

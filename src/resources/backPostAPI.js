@@ -37,7 +37,7 @@ const removePost = (id) => {
             ...headers,
             'Content-Type': 'application/json'
         }
-    })
+    }).then(resp => resp.json())
 }
 
 const votePost = (id, option) => {
@@ -48,15 +48,15 @@ const votePost = (id, option) => {
             ...headers,
             'Content-Type': 'application/json'
         }
-    })
+    }).then(resp => resp.json())
 }
 
 const getPostsByCategory = category =>{
     return fetch(`${api}${category}/posts`, { headers })
         .then((res) => res.json())}
 
-const savePost = (post) =>
-    fetch(`${api}posts`, {
+const savePost = (post) => {
+    return fetch(`${api}posts`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -67,9 +67,12 @@ const savePost = (post) =>
     }).then(res => (
         res.json()
     ))
+}
 
-const getPostById = (id) =>
-    fetch(`${api}posts/${id}`, {
+const getPostById = (id) => {
+    console.log('id no back', id)
+    console.log(`${api}posts/${id}`)
+    return fetch(`${api}posts/${id}`, {
         method: 'GET',
         headers: {
             ...headers,
@@ -78,5 +81,6 @@ const getPostById = (id) =>
         .then(res => (
             res.json()
         ))
+    }
 
 export { getAllPosts, getPostsByCategory, savePost, removePost, editPost, getPostById, votePost }
