@@ -1,17 +1,17 @@
 import React, { Component, Fragment } from 'react'
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap'
 import { Redirect, Link } from 'react-router-dom'
-import './editPost.scss'
+import './editComment.scss'
 import { connect } from 'react-redux'
-import { getPostById, editPost } from '../../../posts/actions'
+import { getCommentById, editComment } from '../../../comments/actions'
 
 
-class EditPost extends Component {
+class EditComment extends Component {
 
     constructor(){
         super()
         this.state = {
-            postEdited: false,
+            commentEdited: false,
             id: '',
             title: '',
             author: '',
@@ -46,13 +46,13 @@ class EditPost extends Component {
     }
 
     componentDidMount(){
-        this.props.getPostByIdAction(this.props.match.params.id)
+        this.props.getCommentByIdAction(this.props.match.params.id)
     }
 
     submitEditedForm(event) {
         event.preventDefault()
-        this.props.editPostAction(this.state.id, this.state)
-        this.setState({ postEdited: true })
+        this.props.editCommentAction(this.state.id, this.state)
+        this.setState({ CommentEdited: true })
     }
 
     update(edittedCategory){
@@ -62,40 +62,38 @@ class EditPost extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState){
-        if(nextProps.post.title !== undefined){
+        if(nextProps.comment.title !== undefined){
             if((prevState.title !== '' && nextProps.post.title !== prevState.title)
                 || (prevState.author !== '' && nextProps.post.author !== prevState.author)
-                || (prevState.body !== '' && nextProps.post.body !== prevState.body)
-                || (prevState.category !== '' && nextProps.post.category !== prevState.category)){
+                || (prevState.body !== '' && nextProps.post.body !== prevState.body)){
                 return{
                     title:prevState.title,
                     author:prevState.author,
-                    body:prevState.body,
-                    category:prevState.category
+                    body:prevState.body
                 }
             }
             return{
-                id:nextProps.post.id,
-                timestamp:nextProps.post.timestamp,
-                title:nextProps.post.title,
-                author:nextProps.post.author,
-                body:nextProps.post.body,
-                category:nextProps.post.category,
-                commentCounts:nextProps.post.commentCounts,
-                voteScore:nextProps.post.voteScore
+                id:nextProps.comment.id,
+                timestamp:nextProps.comment.timestamp,
+                title:nextProps.comment.title,
+                author:nextProps.comment.author,
+                body:nextProps.comment.body,
+                voteScore:nextProps.comment.voteScore
             }
         }
 
     }
 
     render(){
-        if (this.state.postEdited) {
+        console.log('edit comment', this.props)
+        console.log('edit comment', this.state)
+        if (this.state.commentEdited) {
             return (<Redirect to={'/'} />)
         }else{
             return(
                 <Fragment>
                     <div className="header-post">
-                        edição do POST
+                        edição do COMMENT
                     </div>
                     <div className="container-detail-post">
                         <Form onSubmit={this.submitEditedForm}>
@@ -108,21 +106,8 @@ class EditPost extends Component {
                                 <Input type="text" onChange={this.handleAuthorChanges} defaultValue={this.state.author}/>
                             </FormGroup>
                             <FormGroup>
-                                <Label>Conteúdo do Post</Label>
+                                <Label>Conteúdo do Comment</Label>
                                 <Input type="text" onChange={this.handleBodyChanges} defaultValue={this.state.body}/>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label>Categoria</Label>
-                                <Input
-                                    type="select"
-                                    name="select"
-                                    value={this.state.category}
-                                    onChange={(event) => this.update(event.target.value)}
-                                    >
-                                    <option value="react">React</option>
-                                    <option value="redux">Redux</option>
-                                    <option value="udacity">Udacity</option>
-                                </Input>
                             </FormGroup>
                             <Button type="submit">Finalizar edição</Button>
                             <Link className="btn btn-secondary udacity-button" to={'/'}>Voltar</Link>
@@ -137,15 +122,15 @@ class EditPost extends Component {
 
 function mapDispatchToProps(dispatch){
     return {
-        editPostAction: (id, post) => dispatch(editPost(id, post)),
-        getPostByIdAction: (id) => dispatch(getPostById(id))
+        editCommentAction: (id, comment) => dispatch(editComment(id, comment)),
+        getCommentByIdAction: (id) => dispatch(getCommentById(id))
     }
 }
 
 function mapStateToProps(state){
     return {
-        post: state.posts.value
+        comment: state.comments.value
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditPost)
+export default connect(mapStateToProps, mapDispatchToProps)(EditComment)

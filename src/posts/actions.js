@@ -20,10 +20,16 @@ function votePost(id, option){
 function removePost(id) {
     return (disptach, getState) => {
         BackAPI.removePost(id).then(resp => {
-            disptach({
-                type: 'POSTS_REMOVE',
-                payload: getState().posts.value.filter(post => post.id !== resp.id)
-            })
+            const { posts } = getState()
+            const allPosts = [].concat(posts.value)
+            const postIndex = allPosts.findIndex(post => post.id === resp.id)
+            if (postIndex >= 0) {
+                allPosts.splice(postIndex, 1, resp)
+                disptach({
+                    type: 'POSTS_REMOVE',
+                    payload: { allPosts, post: resp }
+                })
+            }
         })
     }
 }

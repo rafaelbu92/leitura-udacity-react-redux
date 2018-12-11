@@ -70,8 +70,6 @@ const savePost = (post) => {
 }
 
 const getPostById = (id) => {
-    console.log('id no back', id)
-    console.log(`${api}posts/${id}`)
     return fetch(`${api}posts/${id}`, {
         method: 'GET',
         headers: {

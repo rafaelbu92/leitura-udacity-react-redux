@@ -1,12 +1,20 @@
 import * as BackAPI from 'resources/backCommentAPI'
 
 function voteComment(id, option){
-    return disptach => {
-        BackAPI.voteComment(id, option).then( resp => {
-            disptach({
-                type: 'COMMENTS_VOTE',
-                payload: resp
-            })
+    console.log('yyy', option)
+    console.log('yyy', id)
+    return (disptach, getState) => {
+        BackAPI.voteComment(id, option).then(resp => {
+            const { comments } = getState()
+            const allComments = [].concat(comments.value)
+            const commentIndex = allComments.findIndex(comment => comment.id === resp.id)
+            if (commentIndex >= 0) {
+                allComments.splice(commentIndex, 1, resp)
+                disptach({
+                    type: 'COMMENTS_VOTE',
+                    payload: { allComments, comment: resp }
+                })
+            }
         })
     }
 }
@@ -45,9 +53,10 @@ function getCommentById(id){
 }
 
 
-function addComment(comment) {
+function addComment(comment, idPost) {
+    console.log('action', idPost)
     return disptach => {
-        BackAPI.addComment(comment).then( resp => {
+        BackAPI.addComment(comment, idPost).then( resp => {
             disptach({
                 type: 'COMMENTS_SAVE',
                 payload: resp

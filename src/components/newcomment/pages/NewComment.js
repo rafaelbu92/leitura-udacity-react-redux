@@ -1,17 +1,17 @@
 import React, { Component, Fragment } from 'react'
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap'
 import { Link, Redirect } from 'react-router-dom'
-import './newPost.scss'
+import './newComment.scss'
 import { connect } from 'react-redux'
-import { savePost } from '../../../posts/actions'
+import { addComment } from '../../../comments/actions'
 
 
-class NewPost extends Component {
+class NewComment extends Component {
 
     constructor() {
         super()
         this.state = {
-            postPublished: false,
+            commentPublished: false,
             title: '',
             author: '',
             body: '',
@@ -45,22 +45,23 @@ class NewPost extends Component {
 
     submitForm(event) {
         event.preventDefault()
-        this.props.savePostAction(this.state)
-        this.setState({ postPublished: true })
+        this.props.saveCommentAction(this.state, this.props.match.params.id)
+        this.setState({ commentPublished: true })
     }
     render() {
         console.log(this.props)
-        if (this.state.postPublished) {
+        console.log(this.state)
+        if (this.state.commentPublished) {
             return (<Redirect to={'/'} />)
         } else {
             return(<Fragment>
                 <div className="header-post">
-                    Create your POST
+                    Create COMMENT
                 </div>
                 <div className="container-new-post">
                     <Form onSubmit={this.submitForm}>
                         <FormGroup>
-                            <Label>POST title</Label>
+                            <Label>Comment Title</Label>
                             <Input onChange={this.handleTitleChanges}></Input>
                         </FormGroup>
                         <FormGroup>
@@ -69,16 +70,7 @@ class NewPost extends Component {
                             </Input>
                         </FormGroup>
                         <FormGroup>
-                            <Label>Cathegory</Label>
-                            <Input type="select" name="select" id="exampleSelect" onChange={this.handleCategoryChanges}>
-                                <option>Select an option...</option>
-                                <option value="react">React</option>
-                                <option value="redux">Redux</option>
-                                <option value="udacity">Udacity</option>
-                            </Input>
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="exampleText">Post Body</Label>
+                            <Label for="exampleText">Comment body</Label>
                             <Input type="textarea" name="text" id="exampleText" onChange={this.handleBodyChanges}>
                             </Input>
                         </FormGroup>
@@ -95,14 +87,14 @@ class NewPost extends Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        savePostAction: (id) => dispatch(savePost(id))
+        saveCommentAction: (comment, idPost) => dispatch(addComment(comment, idPost))
     }
 }
 
 function mapStateToProps(state) {
     return {
-        value: state.posts.value
+        comment: state.comments.value
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewPost)
+export default connect(mapStateToProps, mapDispatchToProps)(NewComment)

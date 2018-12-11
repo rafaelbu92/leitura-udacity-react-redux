@@ -12,7 +12,6 @@ const headers = {
 }
 
 const getAllComments = (id) => {
-    console.log(`${api}posts/${id}/comments`)
     return fetch(`${api}posts/${id}/comments`, {
         method: 'GET',
         headers: {
@@ -24,14 +23,20 @@ const getAllComments = (id) => {
     ))
 }
 
-const addComment = (comment) => {
-    fetch(`${api}comments`, {
+const addComment = (comment, idPost) => {
+    console.log('back', idPost)
+    return fetch(`${api}comments`, {
         method: 'POST',
         headers: {
             ...headers,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify( {...comment, timestamp:new Date().toLocaleString(), id:Math.random().toString(36).substr(-8)
+        body: JSON.stringify(
+            {...comment,
+                 parentId: idPost,
+                 parentDeleted: false,
+                 timestamp:new Date().toLocaleString(),
+                 id:Math.random().toString(36).substr(-8)
         } )
     }).then(res => (
         res.json()
@@ -39,7 +44,7 @@ const addComment = (comment) => {
 }
 
 const getComment = (id) => {
-    return fetch(`${api}/comments${id}`, {
+    return fetch(`${api}comments/${id}`, {
         method: 'GET',
         headers: {
             ...headers,
@@ -58,7 +63,9 @@ const voteComment = (id, option) => {
             ...headers,
             'Content-Type': 'application/json'
         }
-    })
+    }).then(res => (
+        res.json()
+    ))
 }
 
 const editComment = (id, comment) => {
