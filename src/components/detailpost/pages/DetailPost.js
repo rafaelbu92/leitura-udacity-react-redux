@@ -4,7 +4,7 @@ import { Link, Redirect} from 'react-router-dom'
 import './detailPost.scss'
 import { connect } from 'react-redux'
 import { getPostById, votePost, removePost } from '../../../posts/actions'
-import {getAllComments, voteComment, getCommentById} from '../../../comments/actions'
+import {getAllComments, voteComment, getCommentById, deleteComment} from '../../../comments/actions'
 
 
 let timeoutPost = null;
@@ -68,6 +68,11 @@ class DetailPost extends Component {
         this.setState({ postEdited: true })
     }
 
+    deleteComment(id){
+        this.props.deleteCommentAction(id)
+        this.props.getAllCommentsAction(this.props.match.params.id)
+    }
+
 
     componentDidMount(){
         this.props.getPostByIdAction(this.props.match.params.id)
@@ -125,12 +130,19 @@ class DetailPost extends Component {
                                         <ol>
                                             {this.props.comment.length ? this.props.comment.map((comment, index) =>
                                                 <li key={index} className="list-comments">
+                                                    <div>Time</div>
                                                     <div>{comment.timestamp}</div>
+                                                    <div>Author</div>
                                                     <div>{comment.author}</div>
+                                                    <div>Body</div>
                                                     <div>{comment.body}</div>
+                                                    <div>Vote score</div>
                                                     <div>{comment.voteScore}</div>
                                                     <div>
-                                                        <Link className="btn btn-primary udacity-button" to={`/comments/${comment.id}`}>
+                                                        <Button onClick={() => this.deleteComment(comment.id)} className="delete-post-button" size="sm" outline color="primary">
+                                                            Delete
+                                                        </Button>
+                                                        <Link className="btn btn-primary button" to={`/comments/edit/${this.props.post.category}/${this.props.post.id}/${comment.id}`}>
                                                             Edit
                                                         </Link>
                                                         <Button onClick={() => this.voteComment(comment.id,'upVote')} className="delete-comment-button" size="sm" outline color="primary">
@@ -143,7 +155,7 @@ class DetailPost extends Component {
                                                 </li>
                                             ):(<div className="list-comments"><div className="cards-of-posts">There are no commnets yet in this post :(</div></div>)}
                                         </ol>
-                                        <Link className="btn btn-primary button" to={`/comments/create/${this.props.post.id}`}>
+                                        <Link className="btn btn-primary button" to={`/comments/create/${this.props.post.category}/${this.props.post.id}`}>
                                             New Comment
                                         </Link>
                                     </CardBody>
@@ -170,6 +182,7 @@ class DetailPost extends Component {
 
 function mapDispatchToProps(dispatch){
     return {
+        deleteCommentAction: (id) => dispatch(deleteComment(id)),
         deletePostAction: (id) => dispatch(removePost(id)),
         getPostByIdAction: (id) => dispatch(getPostById(id)),
         getAllCommentsAction:(id) => dispatch(getAllComments(id)),

@@ -1,8 +1,6 @@
 import * as BackAPI from 'resources/backCommentAPI'
 
 function voteComment(id, option){
-    console.log('yyy', option)
-    console.log('yyy', id)
     return (disptach, getState) => {
         BackAPI.voteComment(id, option).then(resp => {
             const { comments } = getState()
@@ -20,12 +18,18 @@ function voteComment(id, option){
 }
 
 function deleteComment(id) {
-    return disptach => {
-        BackAPI.deleteComment(id).then( resp => {
-            disptach({
-                type: 'COMMENTS_REMOVE',
-                payload: resp
-            })
+    return (disptach, getState) => {
+        BackAPI.deleteComment(id).then(resp => {
+            const { comments } = getState()
+            const allComments = [].concat(comments.value)
+            const commentIndex = allComments.findIndex(comment => comment.id === resp.id)
+            if (commentIndex >= 0) {
+                allComments.splice(commentIndex, 1, resp)
+                disptach({
+                    type: 'COMMENTS_REMOVE',
+                    payload: { allComments, comment: resp }
+                })
+            }
         })
     }
 }
@@ -54,8 +58,7 @@ function getCommentById(id){
 
 
 function addComment(comment, idPost) {
-    console.log('action', idPost)
-    return disptach => {
+    return (disptach) => {
         BackAPI.addComment(comment, idPost).then( resp => {
             disptach({
                 type: 'COMMENTS_SAVE',

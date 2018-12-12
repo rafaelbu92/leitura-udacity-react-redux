@@ -16,7 +16,6 @@ export default function (state = INITIAL_STATE, action) {
         }
         return {...state, value: payload.allComments }
     case 'COMMENTS_GET_ALL':
-        console.log({...state, value: action.payload})
         return {...state, value: action.payload}
     case 'COMMENTS_GET_BY_ID':
         return {...state, value: action.payload}

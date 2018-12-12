@@ -4,9 +4,8 @@ import {Link} from 'react-router-dom'
 import { connect } from 'react-redux'
 import './cardscomponent.scss'
 import  { getAllPosts }  from 'posts/actions'
-import { removePost, editPost, getPostsByCategory, votePost } from '../../../../../posts/actions'
+import { removePost, editPost, getPostsByCategory, votePost, getAllSortedPosts } from '../../../../../posts/actions'
 import { getAllCategories } from '../../../../../categories/actions'
-import { getAllComments } from '../../../../../comments/actions'
 
 let timeout = null
 
@@ -28,21 +27,25 @@ class CardComponent extends Component {
         this.props.initialPostsAction()
     }
 
+    orderPosts = () => {
+        this.props.getAllSortedPosts()
+    }
+
     render() {
+        const posts = this.filterList()
         console.log(this.props)
-        const posts = this.filterList() // ---> looping
         return (
             <Fragment>
 
                 <div className="menu-main">
                     <div className="group-button">
-                        <Link className="btn btn-primary button-list" to={`/`}>
+                        <Link className="btn btn-primary button-all" to={`/`}>
                             All
                         </Link>
                         <ul>
                             {this.props.category.categories ? this.props.category.categories.map((element, index) =>
-                            <li key={index}>
-                                <Link className="btn btn-primary button-list" to={`${element.path}`}>
+                            <li className="group-button" key={index}>
+                                <Link className="btn btn-primary button" to={`${element.path}`}>
                                     {element.name}
                                 </Link>
                             </li>
@@ -72,10 +75,10 @@ class CardComponent extends Component {
                                                 Delete
                                             </Button>
                                             <Button onClick={() => this.votePost(element.id,'upVote')} className="delete-post-button" size="sm" outline color="primary">
-                                                Like POST
+                                                Like
                                             </Button>
                                             <Button onClick={() => this.votePost(element.id,'downVote')} className="delete-post-button" size="sm" outline color="primary">
-                                                Unlike POST
+                                                Unlike
                                             </Button>
                                             <div className="post-title-value">{element.title}</div>
                                             <div>number of comments</div>
@@ -99,10 +102,6 @@ class CardComponent extends Component {
         )
     }
 
-    orderPosts = () => {
-        //this.props.getAllCommentsPerPostAction(id)
-    }
-
     filterList = () => {
         const { match, post = [] } = this.props
         const { params: { category = '' }} = match
@@ -117,13 +116,13 @@ class CardComponent extends Component {
 
 function mapDispatchToProps(dispatch){
     return {
+        getAllSortedPosts: () => dispatch(getAllSortedPosts()),
         getAllCategoriesAction: () => dispatch(getAllCategories()),
         initialPostsAction: () => dispatch(getAllPosts()),
         deletePostAction:(id) =>  dispatch(removePost(id)),
         editPostAction:(id, post) =>  dispatch(editPost(id, post)),
         getPostsByCategoryAction: (category) => dispatch(getPostsByCategory(category)),
-        votePostAction:(id, option) => dispatch(votePost(id, option)),
-        getAllCommentsPerPostAction:(id) => dispatch(getAllComments(id))
+        votePostAction:(id, option) => dispatch(votePost(id, option))
     }
 }
 

@@ -75,8 +75,11 @@ const editComment = (id, comment) => {
             comment,
             ...headers,
             'Content-Type': 'application/json'
-        }
-    })
+        },
+        body: JSON.stringify( {...comment})
+    }).then(res => (
+        res.json()
+    ))
 }
 
 const deleteComment = (id) => {

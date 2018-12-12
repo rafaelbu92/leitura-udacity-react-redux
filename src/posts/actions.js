@@ -45,6 +45,18 @@ function getAllPosts() {
     }
 }
 
+function getAllSortedPosts() {
+    return disptach => {
+        BackAPI.getAllPosts().then( resp => {
+            const respSorted = resp.sort((a,b) =>  b.voteScore - a.voteScore)
+            disptach({
+                type: 'POSTS_GET_ALL',
+                payload: respSorted
+            })
+        })
+    }
+}
+
 function getPostById(id){
     return disptach => {
         BackAPI.getPostById(id).then( resp => {
@@ -89,7 +101,7 @@ function editPost(id, post) {
     }
 }
 
-export { getAllPosts, getPostsByCategory, savePost, removePost, editPost, getPostById, votePost }
+export { getAllPosts, getPostsByCategory, savePost, removePost, editPost, getPostById, votePost, getAllSortedPosts }
 
 
 

@@ -62,6 +62,8 @@ class EditPost extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState){
+        console.log('prev state', prevState)
+        console.log('next props', nextProps)
         if(nextProps.post.title !== undefined){
             if((prevState.title !== '' && nextProps.post.title !== prevState.title)
                 || (prevState.author !== '' && nextProps.post.author !== prevState.author)
@@ -125,7 +127,7 @@ class EditPost extends Component {
                                 </Input>
                             </FormGroup>
                             <Button type="submit">Finalizar edição</Button>
-                            <Link className="btn btn-secondary udacity-button" to={'/'}>Voltar</Link>
+                            <Link className="btn btn-secondary udacity-button" to={`/${this.props.post.category}/${this.props.post.id}`}>Voltar</Link>
                         </Form>
                       </div>
                 </Fragment>

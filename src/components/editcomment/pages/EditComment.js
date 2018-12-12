@@ -13,26 +13,17 @@ class EditComment extends Component {
         this.state = {
             commentEdited: false,
             id: '',
-            title: '',
             author: '',
             body: '',
-            category: '',
             timestamp: null,
             voteScore: null,
-            deleted: undefined,
-            commentCounts: null
+            deleted: undefined
         }
-        this.handleTitleChanges = this.handleTitleChanges.bind(this)
         this.handleAuthorChanges = this.handleAuthorChanges.bind(this)
         this.handleBodyChanges = this.handleBodyChanges.bind(this)
         this.handleCategoryChanges = this.handleCategoryChanges.bind(this)
         this.submitEditedForm = this.submitEditedForm.bind(this)
     }
-
-    handleTitleChanges(event) {
-        this.setState({ title: event.target.value })
-    }
-
     handleAuthorChanges(event) {
         this.setState({ author: event.target.value })
     }
@@ -46,13 +37,13 @@ class EditComment extends Component {
     }
 
     componentDidMount(){
-        this.props.getCommentByIdAction(this.props.match.params.id)
+        this.props.getCommentByIdAction(this.props.match.params.idComment)
     }
 
     submitEditedForm(event) {
         event.preventDefault()
         this.props.editCommentAction(this.state.id, this.state)
-        this.setState({ CommentEdited: true })
+        this.setState({ commentEdited: true })
     }
 
     update(edittedCategory){
@@ -62,33 +53,36 @@ class EditComment extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState){
-        if(nextProps.comment.title !== undefined){
-            if((prevState.title !== '' && nextProps.post.title !== prevState.title)
-                || (prevState.author !== '' && nextProps.post.author !== prevState.author)
-                || (prevState.body !== '' && nextProps.post.body !== prevState.body)){
+        console.log('prev state', prevState)
+        console.log('next props', nextProps)
+        console.log('hello')
+        if(nextProps.comment.author !== undefined){
+            console.log('1')
+            if((prevState.author !== '' && nextProps.comment.author !== prevState.author)
+                || (prevState.body !== '' && nextProps.comment.body !== prevState.body)){
+                console.log('2')
                 return{
-                    title:prevState.title,
                     author:prevState.author,
                     body:prevState.body
                 }
             }
+            console.log('3')
             return{
                 id:nextProps.comment.id,
                 timestamp:nextProps.comment.timestamp,
-                title:nextProps.comment.title,
                 author:nextProps.comment.author,
                 body:nextProps.comment.body,
-                voteScore:nextProps.comment.voteScore
+                voteScore:nextProps.comment.voteScore,
+                parentId:nextProps.comment.parentId
             }
         }
-
+        return null
     }
 
     render(){
-        console.log('edit comment', this.props)
-        console.log('edit comment', this.state)
+        console.log(this.props)
         if (this.state.commentEdited) {
-            return (<Redirect to={'/'} />)
+            return (<Redirect to={`/${this.props.match.params.category}/${this.props.match.params.idPost}`} />)
         }else{
             return(
                 <Fragment>
@@ -98,10 +92,6 @@ class EditComment extends Component {
                     <div className="container-detail-post">
                         <Form onSubmit={this.submitEditedForm}>
                             <FormGroup>
-                                <Label>Título</Label>
-                                <Input type="text" onChange={this.handleTitleChanges} defaultValue={this.state.title}/>
-                            </FormGroup>
-                            <FormGroup>
                                 <Label>Autor</Label>
                                 <Input type="text" onChange={this.handleAuthorChanges} defaultValue={this.state.author}/>
                             </FormGroup>
@@ -110,7 +100,7 @@ class EditComment extends Component {
                                 <Input type="text" onChange={this.handleBodyChanges} defaultValue={this.state.body}/>
                             </FormGroup>
                             <Button type="submit">Finalizar edição</Button>
-                            <Link className="btn btn-secondary udacity-button" to={'/'}>Voltar</Link>
+                            <Link className="btn btn-secondary udacity-button" to={`/${this.props.match.params.category}/${this.props.match.params.idPost}`}>Voltar</Link>
                         </Form>
                       </div>
                 </Fragment>

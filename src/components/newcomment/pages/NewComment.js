@@ -49,10 +49,8 @@ class NewComment extends Component {
         this.setState({ commentPublished: true })
     }
     render() {
-        console.log(this.props)
-        console.log(this.state)
         if (this.state.commentPublished) {
-            return (<Redirect to={'/'} />)
+            return (<Redirect to={`/${this.props.match.params.category}/${this.props.match.params.id}`} />)
         } else {
             return(<Fragment>
                 <div className="header-post">
@@ -75,7 +73,7 @@ class NewComment extends Component {
                             </Input>
                         </FormGroup>
                         <Button type="submit">Create</Button>
-                        <Link to={'/'}>
+                        <Link to={`/${this.props.match.params.category}/${this.props.match.params.id}`}>
                             <Button>Cancel</Button>
                         </Link>
                     </Form>
