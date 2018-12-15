@@ -6,10 +6,12 @@ import DetailPost from 'components/detailpost/pages/DetailPost'
 import EditPost from 'components/editpost/pages/EditPost'
 import EditComment from 'components/editcomment/pages/EditComment'
 import CardComponent from '../components/home/components/body/components/CardComponent'
+import ErrorComponent from '../utils/ErrorComponent'
 
 const App = () => (
     <BrowserRouter>
         <Switch>
+            <Route path="/error" exact component={ErrorComponent}/>
             <Route path="/" exact component={CardComponent}/>
             <Route path="/posts/create" exact component={NewPost}/>
             <Route path="/comments/create/:category/:id" exact component={NewComment}/>

@@ -4,21 +4,20 @@ const INITIAL_STATE = {value: [], comment: {}}
 export default function (state = INITIAL_STATE, action) {
     switch(action.type){
     case 'COMMENTS_EDIT':
-        return {...state, value: action.payload}
+        return {...state, value: action.payload.allComments, comment:action.payload.comment }
     case 'COMMENTS_REMOVE':
-        return {...state, value: action.payload}
+        const commentIndex = state.value.findIndex(comment => comment.id === action.payload.id)
+        state.value.splice(commentIndex, 1, action.payload)
+        return {...state}
     case 'COMMENTS_SAVE':
-        return {...state, value: [...state.value, action.payload]}
+        return {value: state.value.concat(action.payload)}
     case 'COMMENTS_VOTE':
         const { payload } = action
-        if (state.comment.id) {
-            return {...state, value: payload.allComments, comment: payload.comment }
-        }
-        return {...state, value: payload.allComments }
+        return {...state, value: payload }
     case 'COMMENTS_GET_ALL':
         return {...state, value: action.payload}
     case 'COMMENTS_GET_BY_ID':
-        return {...state, value: action.payload}
+        return {...state, comment: action.payload}
     default:
         return state
     }

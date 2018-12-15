@@ -1,16 +1,16 @@
 import * as BackAPI from 'resources/backPostAPI'
 
 function votePost(id, option){
-    return (disptach, getState) => {
+    return (dispatch, getState) => {
         BackAPI.votePost(id, option).then(resp => {
             const { posts } = getState()
             const allPosts = [].concat(posts.value)
             const postIndex = allPosts.findIndex(post => post.id === resp.id)
             if (postIndex >= 0) {
                 allPosts.splice(postIndex, 1, resp)
-                disptach({
+                dispatch({
                     type: 'POSTS_VOTE',
-                    payload: { allPosts, post: resp }
+                    payload: allPosts
                 })
             }
         })
@@ -18,26 +18,21 @@ function votePost(id, option){
 }
 
 function removePost(id) {
-    return (disptach, getState) => {
+    return (dispatch) => {
         BackAPI.removePost(id).then(resp => {
-            const { posts } = getState()
-            const allPosts = [].concat(posts.value)
-            const postIndex = allPosts.findIndex(post => post.id === resp.id)
-            if (postIndex >= 0) {
-                allPosts.splice(postIndex, 1, resp)
-                disptach({
-                    type: 'POSTS_REMOVE',
-                    payload: { allPosts, post: resp }
-                })
-            }
+            console.log(resp)
+            dispatch({
+                type: 'POSTS_REMOVE',
+                payload: resp
+            })
         })
     }
 }
 
 function getAllPosts() {
-    return disptach => {
+    return dispatch => {
         BackAPI.getAllPosts().then( resp => {
-            disptach({
+            dispatch({
                 type: 'POSTS_GET_ALL',
                 payload: resp
             })
@@ -46,10 +41,11 @@ function getAllPosts() {
 }
 
 function getAllSortedPosts() {
-    return disptach => {
+    return dispatch => {
         BackAPI.getAllPosts().then( resp => {
             const respSorted = resp.sort((a,b) =>  b.voteScore - a.voteScore)
-            disptach({
+            console.log('respSorted(payload) da action POSTS_GET_BY_ID', resp)
+            dispatch({
                 type: 'POSTS_GET_ALL',
                 payload: respSorted
             })
@@ -58,9 +54,10 @@ function getAllSortedPosts() {
 }
 
 function getPostById(id){
-    return disptach => {
+    return (dispatch) => {
         BackAPI.getPostById(id).then( resp => {
-            disptach({
+            console.log('resp do by id', resp)
+            dispatch({
                 type: 'POSTS_GET_BY_ID',
                 payload: resp
             })
@@ -69,9 +66,10 @@ function getPostById(id){
 }
 
 function getPostsByCategory(category) {
-    return disptach => {
+    return dispatch => {
         BackAPI.getPostsByCategory(category).then( resp => {
-            disptach({
+            console.log('resp da action POSTS_GET_ALL_BY_CATEGORY', resp)
+            dispatch({
                 type: 'POSTS_GET_ALL_BY_CATEGORY',
                 payload: resp
             })
@@ -80,9 +78,9 @@ function getPostsByCategory(category) {
 }
 
 function savePost(post) {
-    return disptach => {
+    return (dispatch) => {
         BackAPI.savePost(post).then( resp => {
-            disptach({
+            dispatch({
                 type: 'POSTS_SAVE',
                 payload: resp
             })
@@ -91,17 +89,23 @@ function savePost(post) {
 }
 
 function editPost(id, post) {
-    return disptach => {
+    return (dispatch, getState) => {
         BackAPI.editPost(id, post).then( resp => {
-            disptach({
-                type: 'POSTS_EDIT',
-                payload: resp
-            })
+            const { posts } = getState()
+            const allPosts = [].concat(posts.value)
+            const postIndex = allPosts.findIndex(post => post.id === resp.id)
+            if (postIndex >= 0) {
+                allPosts.splice(postIndex, 1, resp)
+                dispatch({
+                    type: 'POSTS_EDIT',
+                    payload: { allPosts, post: resp }
+                })
+            }
         })
     }
 }
 
-export { getAllPosts, getPostsByCategory, savePost, removePost, editPost, getPostById, votePost, getAllSortedPosts }
+export { getAllPosts ,getPostsByCategory, savePost, removePost, editPost, getPostById, votePost, getAllSortedPosts }
 
 
 

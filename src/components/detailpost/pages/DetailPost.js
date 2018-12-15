@@ -53,14 +53,11 @@ class DetailPost extends Component {
     }
 
     voteComment(id, option){
-        console.log('aaa', id)
-        console.log('aaa', option)
         clearTimeout(timeoutComment)
         timeoutComment = setTimeout(() => {
             this.props.voteCommentAction(id, option)
-            this.props.getAllCommentsAction(this.props.match.params.id)
-
-        }, 250)
+        }, 200)
+        this.props.getAllCommentsAction(this.props.match.params.id)
     }
 
     deletePost(id){
@@ -70,7 +67,6 @@ class DetailPost extends Component {
 
     deleteComment(id){
         this.props.deleteCommentAction(id)
-        this.props.getAllCommentsAction(this.props.match.params.id)
     }
 
 
@@ -86,10 +82,12 @@ class DetailPost extends Component {
     }
 
     render(){
-        console.log(this.props.comment)
+        const comments = this.checkComment()
         if (this.state.postEdited) {
             return (<Redirect to={'/'} />)
-        }else{
+        }
+        else{
+            console.log('commnents no render', comments)
             return(
                 <Fragment>
                     <div className="header-post">
@@ -120,7 +118,7 @@ class DetailPost extends Component {
                                 <div>Score votes</div>
                                 <div>{this.props.post.voteScore}</div>
                                 <div>Comment numbers</div>
-                                <div>{this.props.post.commentCount}</div>
+                                <div>{this.props.comment.length}</div>
                             </CardBody>
                         </Card>
                         <Button className="comments-button" color="secondary" onClick={() => this.toggle()}>Comments</Button>
@@ -128,7 +126,7 @@ class DetailPost extends Component {
                                 <Card>
                                     <CardBody>
                                         <ol>
-                                            {this.props.comment.length ? this.props.comment.map((comment, index) =>
+                                            {comments.length ? comments.map((comment, index) =>
                                                 <li key={index} className="list-comments">
                                                     <div>Time</div>
                                                     <div>{comment.timestamp}</div>
@@ -164,7 +162,7 @@ class DetailPost extends Component {
                         <Link className="btn btn-primary button" to={`/posts/edit/${this.props.post.id}`}>
                             Edit
                         </Link>
-                        <Link className="btn btn-primary button" to={`/`}>
+                        <Link className="btn btn-primary button" to={{pathname: '/', state: 'flushDeal'}}>
                             Back
                         </Link>
                     </div>
@@ -172,6 +170,13 @@ class DetailPost extends Component {
             )
 
         }
+    }
+
+    checkComment = () => {
+        const { comment = [] } = this.props
+        console.log('comment do check', comment)
+        const filteredComments = comment.filter(comment => !comment.deleted)
+        return filteredComments
     }
 
     toggle = () => {
@@ -193,9 +198,10 @@ function mapDispatchToProps(dispatch){
 }
 
 function mapStateToProps(state){
+    const filteredComments = state.comments.value.filter(comment => !comment.deleted)
     return {
-        post: state.posts.value,
-        comment: state.comments.value
+        post: state.posts.post,
+        comment: filteredComments
     }
 }
 

@@ -49,7 +49,7 @@ class NewPost extends Component {
         this.setState({ postPublished: true })
     }
     render() {
-        console.log(this.props)
+        console.log('props no render tela criar post novo', this.props)
         if (this.state.postPublished) {
             return (<Redirect to={'/'} />)
         } else {

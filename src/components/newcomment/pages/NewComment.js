@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom'
 import './newComment.scss'
 import { connect } from 'react-redux'
 import { addComment } from '../../../comments/actions'
+import { getPostById } from '../../../posts/actions';
 
 
 class NewComment extends Component {
@@ -17,15 +18,10 @@ class NewComment extends Component {
             body: '',
             category: ''
         }
-        this.handleTitleChanges = this.handleTitleChanges.bind(this)
         this.handleAuthorChanges = this.handleAuthorChanges.bind(this)
         this.handleBodyChanges = this.handleBodyChanges.bind(this)
         this.handleCategoryChanges = this.handleCategoryChanges.bind(this)
         this.submitForm = this.submitForm.bind(this)
-    }
-
-    handleTitleChanges(event) {
-        this.setState({ title: event.target.value })
     }
 
     handleAuthorChanges(event) {
@@ -38,9 +34,6 @@ class NewComment extends Component {
 
     handleCategoryChanges(event) {
         this.setState({ category: event.target.value })
-    }
-
-    componentDidMount() {
     }
 
     submitForm(event) {
@@ -58,10 +51,6 @@ class NewComment extends Component {
                 </div>
                 <div className="container-new-post">
                     <Form onSubmit={this.submitForm}>
-                        <FormGroup>
-                            <Label>Comment Title</Label>
-                            <Input onChange={this.handleTitleChanges}></Input>
-                        </FormGroup>
                         <FormGroup>
                             <Label>Author</Label>
                             <Input onChange={this.handleAuthorChanges}>
@@ -91,6 +80,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
     return {
+        post: state.posts.value,
         comment: state.comments.value
     }
 }

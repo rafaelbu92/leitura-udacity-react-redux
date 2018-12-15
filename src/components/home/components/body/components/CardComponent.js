@@ -6,6 +6,7 @@ import './cardscomponent.scss'
 import  { getAllPosts }  from 'posts/actions'
 import { removePost, editPost, getPostsByCategory, votePost, getAllSortedPosts } from '../../../../../posts/actions'
 import { getAllCategories } from '../../../../../categories/actions'
+import { getAllComments } from '../../../../../comments/actions'
 
 let timeout = null
 
@@ -14,12 +15,14 @@ class CardComponent extends Component {
     deletePost(id){
         this.props.deletePostAction(id)
         this.props.getAllCategoriesAction()
-        this.props.initialPostsAction()
     }
 
     votePost(id, option){
         clearTimeout(timeout)
-        timeout = setTimeout(() => this.props.votePostAction(id, option), 250)
+        timeout = setTimeout(() => {
+            this.props.votePostAction(id, option)
+        }, 200)
+        this.props.initialPostsAction()
     }
 
     componentDidMount(){
@@ -31,12 +34,18 @@ class CardComponent extends Component {
         this.props.getAllSortedPosts()
     }
 
+    getCommentCountPerPost = (postId, post) => {
+        if(this.props.comments.length) {
+           return this.props.comments.filter( comment => comment.parentId === postId).length;
+        }else{
+           return post.commentCount
+        }
+    }
+
     render() {
         const posts = this.filterList()
-        console.log(this.props)
         return (
             <Fragment>
-
                 <div className="menu-main">
                     <div className="group-button">
                         <Link className="btn btn-primary button-all" to={`/`}>
@@ -64,7 +73,7 @@ class CardComponent extends Component {
                         <FormGroup>
                             <ol>
                                 {posts.length ? posts.map((element, index) =>
-                                    <li key={index} className="list-cards">
+                                <li key={index} className="list-cards">
                                         <div className="cards-of-posts">
                                             <div className="edit-post-button">
                                                 <Link className="btn btn-primary udacity-button" to={`/${element.category}/${element.id}`}>
@@ -82,7 +91,7 @@ class CardComponent extends Component {
                                             </Button>
                                             <div className="post-title-value">{element.title}</div>
                                             <div>number of comments</div>
-                                            <div>{element.commentCount}</div>
+                                            <div>{this.getCommentCountPerPost(element.id, element)}</div>
                                             <div>vote numbers</div>
                                             <div>{element.voteScore}</div>
                                             <div className="author-info-grp">
@@ -110,13 +119,12 @@ class CardComponent extends Component {
         }
         return post
     }
-
 }
-
 
 function mapDispatchToProps(dispatch){
     return {
         getAllSortedPosts: () => dispatch(getAllSortedPosts()),
+        getAllCommentsAction:(id) => dispatch(getAllComments(id)),
         getAllCategoriesAction: () => dispatch(getAllCategories()),
         initialPostsAction: () => dispatch(getAllPosts()),
         deletePostAction:(id) =>  dispatch(removePost(id)),
@@ -126,11 +134,15 @@ function mapDispatchToProps(dispatch){
     }
 }
 
+const selectComments = (state) => state.comments.value;
+
+
 function mapStateToProps(state){
+    const filteredPosts = state.posts.value.filter(post => !post.deleted)
     return {
-        post: state.posts.value,
+        post: filteredPosts,
         category: state.categories.value,
-        comments: state.comments.value
+        comments: selectComments(state)
     }
 }
 

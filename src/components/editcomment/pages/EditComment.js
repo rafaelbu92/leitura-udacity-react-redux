@@ -43,7 +43,7 @@ class EditComment extends Component {
     submitEditedForm(event) {
         event.preventDefault()
         this.props.editCommentAction(this.state.id, this.state)
-        this.setState({ commentEdited: true })
+        this.setState({ commentEdited: true, author:'', body: '' })
     }
 
     update(edittedCategory){
@@ -55,18 +55,14 @@ class EditComment extends Component {
     static getDerivedStateFromProps(nextProps, prevState){
         console.log('prev state', prevState)
         console.log('next props', nextProps)
-        console.log('hello')
         if(nextProps.comment.author !== undefined){
-            console.log('1')
             if((prevState.author !== '' && nextProps.comment.author !== prevState.author)
                 || (prevState.body !== '' && nextProps.comment.body !== prevState.body)){
-                console.log('2')
                 return{
                     author:prevState.author,
                     body:prevState.body
                 }
             }
-            console.log('3')
             return{
                 id:nextProps.comment.id,
                 timestamp:nextProps.comment.timestamp,
@@ -80,7 +76,7 @@ class EditComment extends Component {
     }
 
     render(){
-        console.log(this.props)
+        console.log('yy',this.props)
         if (this.state.commentEdited) {
             return (<Redirect to={`/${this.props.match.params.category}/${this.props.match.params.idPost}`} />)
         }else{
@@ -119,7 +115,7 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state){
     return {
-        comment: state.comments.value
+        comment: state.comments.comment
     }
 }
 

@@ -10,5 +10,4 @@ const reducers = combineReducers({
     comments: commentReducer
 })
 
-export {reducers}
-
+export default reducers;

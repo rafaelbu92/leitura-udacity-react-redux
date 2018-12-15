@@ -24,7 +24,6 @@ const getAllComments = (id) => {
 }
 
 const addComment = (comment, idPost) => {
-    console.log('back', idPost)
     return fetch(`${api}comments`, {
         method: 'POST',
         headers: {
@@ -89,7 +88,9 @@ const deleteComment = (id) => {
             ...headers,
             'Content-Type': 'application/json'
         }
-    })
+    }).then(res => (
+        res.json()
+    ))
 }
 
 export { getAllComments, deleteComment, editComment, voteComment, addComment, getComment}

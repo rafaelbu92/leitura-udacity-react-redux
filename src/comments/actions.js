@@ -1,16 +1,16 @@
 import * as BackAPI from 'resources/backCommentAPI'
 
 function voteComment(id, option){
-    return (disptach, getState) => {
+    return (dispatch, getState) => {
         BackAPI.voteComment(id, option).then(resp => {
             const { comments } = getState()
             const allComments = [].concat(comments.value)
             const commentIndex = allComments.findIndex(comment => comment.id === resp.id)
             if (commentIndex >= 0) {
                 allComments.splice(commentIndex, 1, resp)
-                disptach({
+                dispatch({
                     type: 'COMMENTS_VOTE',
-                    payload: { allComments, comment: resp }
+                    payload: allComments
                 })
             }
         })
@@ -18,26 +18,21 @@ function voteComment(id, option){
 }
 
 function deleteComment(id) {
-    return (disptach, getState) => {
+    return (dispatch) => {
         BackAPI.deleteComment(id).then(resp => {
-            const { comments } = getState()
-            const allComments = [].concat(comments.value)
-            const commentIndex = allComments.findIndex(comment => comment.id === resp.id)
-            if (commentIndex >= 0) {
-                allComments.splice(commentIndex, 1, resp)
-                disptach({
-                    type: 'COMMENTS_REMOVE',
-                    payload: { allComments, comment: resp }
-                })
-            }
+            dispatch({
+                type: 'COMMENTS_REMOVE',
+                payload: resp
+            })
         })
     }
 }
 
 function getAllComments(id) {
-    return disptach => {
+    return dispatch => {
         BackAPI.getAllComments(id).then( resp => {
-            disptach({
+            console.log('resp da action COMMENTS_GET_ALL', resp)
+            dispatch({
                 type: 'COMMENTS_GET_ALL',
                 payload: resp
             })
@@ -46,9 +41,9 @@ function getAllComments(id) {
 }
 
 function getCommentById(id){
-    return disptach => {
+    return (dispatch) => {
         BackAPI.getComment(id).then( resp => {
-            disptach({
+            dispatch({
                 type: 'COMMENTS_GET_BY_ID',
                 payload: resp
             })
@@ -58,9 +53,10 @@ function getCommentById(id){
 
 
 function addComment(comment, idPost) {
-    return (disptach) => {
+    return (dispatch) => {
         BackAPI.addComment(comment, idPost).then( resp => {
-            disptach({
+            console.log('resp da action COMMENTS_SAVE', resp)
+            dispatch({
                 type: 'COMMENTS_SAVE',
                 payload: resp
             })
@@ -69,12 +65,19 @@ function addComment(comment, idPost) {
 }
 
 function editComment(id, comment) {
-    return disptach => {
+    return (dispatch, getState) => {
         BackAPI.editComment(id, comment).then( resp => {
-            disptach({
-                type: 'COMMENT_EDIT',
-                payload: resp
-            })
+            const { comments } = getState()
+            const allComments = [].concat(comments.value)
+            const commentIndex = allComments.findIndex(comment => comment.id === resp.id)
+            if (commentIndex >= 0) {
+                allComments.splice(commentIndex, 1, resp)
+                console.log('resp da action COMMENT_EDIT', resp)
+                dispatch({
+                    type: 'COMMENTS_EDIT',
+                    payload: { allComments, comment: resp }
+                })
+            }
         })
     }
 }
