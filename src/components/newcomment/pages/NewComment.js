@@ -4,12 +4,13 @@ import { Link, Redirect } from 'react-router-dom'
 import './newComment.scss'
 import { connect } from 'react-redux'
 import { addComment } from '../../../comments/actions'
-import { getPostById } from '../../../posts/actions';
+import {  editPostIncrementalCommentCount, getPostById, getAllPosts } from '../../../posts/actions'
 
 
 class NewComment extends Component {
 
     constructor() {
+        console.log('constructor')
         super()
         this.state = {
             commentPublished: false,
@@ -32,16 +33,27 @@ class NewComment extends Component {
         this.setState({ body: event.target.value })
     }
 
+    componentDidMount(){
+        console.log('component did mount')
+        console.log(this.props)
+        this.props.getPostByIdAction(this.props.match.params.id)
+        this.props.initialPostsAction()
+    }
+
     handleCategoryChanges(event) {
         this.setState({ category: event.target.value })
     }
 
     submitForm(event) {
+        console.log(this.props.post)
         event.preventDefault()
+        console.log(this.props.post)
         this.props.saveCommentAction(this.state, this.props.match.params.id)
+        this.props.editPostIncrementalCommentCount(this.props.match.params.id, this.props.post)
         this.setState({ commentPublished: true })
     }
     render() {
+        console.log('render')
         if (this.state.commentPublished) {
             return (<Redirect to={`/${this.props.match.params.category}/${this.props.match.params.id}`} />)
         } else {
@@ -73,14 +85,19 @@ class NewComment extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
+    console.log('dispatch')
     return {
+        initialPostsAction: () => dispatch(getAllPosts()),
+        getPostByIdAction: (id) => dispatch(getPostById(id)),
+        editPostIncrementalCommentCount:(id, post) => dispatch(editPostIncrementalCommentCount(id, post)),
         saveCommentAction: (comment, idPost) => dispatch(addComment(comment, idPost))
     }
 }
 
 function mapStateToProps(state) {
+    console.log('state to props')
     return {
-        post: state.posts.value,
+        post: state.posts.post,
         comment: state.comments.value
     }
 }

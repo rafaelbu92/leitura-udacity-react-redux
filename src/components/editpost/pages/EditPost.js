@@ -3,7 +3,7 @@ import { Form, FormGroup, Label, Input, Button } from 'reactstrap'
 import { Redirect, Link } from 'react-router-dom'
 import './editPost.scss'
 import { connect } from 'react-redux'
-import { getPostById, editPost } from '../../../posts/actions'
+import { getPostById, editPost, getAllPosts } from '../../../posts/actions'
 
 
 class EditPost extends Component {
@@ -47,6 +47,7 @@ class EditPost extends Component {
 
     componentDidMount(){
         this.props.getPostByIdAction(this.props.match.params.id)
+        this.props.initialPostsAction()
     }
 
     submitEditedForm(event) {
@@ -139,6 +140,7 @@ class EditPost extends Component {
 
 function mapDispatchToProps(dispatch){
     return {
+        initialPostsAction: () => dispatch(getAllPosts()),
         editPostAction: (id, post) => dispatch(editPost(id, post)),
         getPostByIdAction: (id) => dispatch(getPostById(id))
     }

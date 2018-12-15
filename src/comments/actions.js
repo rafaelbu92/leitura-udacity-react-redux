@@ -31,7 +31,6 @@ function deleteComment(id) {
 function getAllComments(id) {
     return dispatch => {
         BackAPI.getAllComments(id).then( resp => {
-            console.log('resp da action COMMENTS_GET_ALL', resp)
             dispatch({
                 type: 'COMMENTS_GET_ALL',
                 payload: resp
@@ -55,7 +54,6 @@ function getCommentById(id){
 function addComment(comment, idPost) {
     return (dispatch) => {
         BackAPI.addComment(comment, idPost).then( resp => {
-            console.log('resp da action COMMENTS_SAVE', resp)
             dispatch({
                 type: 'COMMENTS_SAVE',
                 payload: resp
@@ -72,7 +70,6 @@ function editComment(id, comment) {
             const commentIndex = allComments.findIndex(comment => comment.id === resp.id)
             if (commentIndex >= 0) {
                 allComments.splice(commentIndex, 1, resp)
-                console.log('resp da action COMMENT_EDIT', resp)
                 dispatch({
                     type: 'COMMENTS_EDIT',
                     payload: { allComments, comment: resp }

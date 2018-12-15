@@ -8,11 +8,11 @@ export default function (state = INITIAL_STATE, action) {
     case 'POSTS_GET_BY_ID'://ok
         return {...state, post: action.payload }
     case 'POSTS_GET_ALL'://ok
-        return {value: action.payload, post:{}}
+        return {...state, value: action.payload}
     case 'POSTS_GET_ALL_BY_CATEGORY'://ok
         return {...state, value: action.payload}
     case 'POSTS_SAVE'://ok
-        return {value: state.value.concat(action.payload)}
+        return {...state, value: state.value.concat(action.payload)}
     case 'POSTS_REMOVE'://ok
         const postIndex = state.value.findIndex(post => post.id === action.payload.id)
         state.value.splice(postIndex, 1, action.payload)

@@ -4,6 +4,7 @@ import { Redirect, Link } from 'react-router-dom'
 import './editComment.scss'
 import { connect } from 'react-redux'
 import { getCommentById, editComment } from '../../../comments/actions'
+import { editPost, getAllPosts } from '../../../posts/actions'
 
 
 class EditComment extends Component {
@@ -37,7 +38,9 @@ class EditComment extends Component {
     }
 
     componentDidMount(){
+        console.log('component did mount')
         this.props.getCommentByIdAction(this.props.match.params.idComment)
+        this.props.initialPostsAction()
     }
 
     submitEditedForm(event) {
@@ -53,16 +56,18 @@ class EditComment extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState){
-        console.log('prev state', prevState)
-        console.log('next props', nextProps)
+        console.log('get derived state from props')
         if(nextProps.comment.author !== undefined){
+            console.log('primeiro if')
             if((prevState.author !== '' && nextProps.comment.author !== prevState.author)
                 || (prevState.body !== '' && nextProps.comment.body !== prevState.body)){
+                console.log('segundo if')
                 return{
                     author:prevState.author,
                     body:prevState.body
                 }
             }
+            console.log('segundo if')
             return{
                 id:nextProps.comment.id,
                 timestamp:nextProps.comment.timestamp,
@@ -71,12 +76,13 @@ class EditComment extends Component {
                 voteScore:nextProps.comment.voteScore,
                 parentId:nextProps.comment.parentId
             }
+
         }
         return null
     }
 
     render(){
-        console.log('yy',this.props)
+        console.log(this.props)
         if (this.state.commentEdited) {
             return (<Redirect to={`/${this.props.match.params.category}/${this.props.match.params.idPost}`} />)
         }else{
@@ -107,7 +113,9 @@ class EditComment extends Component {
 }
 
 function mapDispatchToProps(dispatch){
+    console.log('map dispatch props')
     return {
+        initialPostsAction: () => dispatch(getAllPosts()),
         editCommentAction: (id, comment) => dispatch(editComment(id, comment)),
         getCommentByIdAction: (id) => dispatch(getCommentById(id))
     }
@@ -115,7 +123,8 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state){
     return {
-        comment: state.comments.comment
+        comment: state.comments.comment,
+        post: state.posts.post
     }
 }
 

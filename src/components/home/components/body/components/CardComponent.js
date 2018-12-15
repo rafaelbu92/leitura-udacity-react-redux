@@ -91,7 +91,7 @@ class CardComponent extends Component {
                                             </Button>
                                             <div className="post-title-value">{element.title}</div>
                                             <div>number of comments</div>
-                                            <div>{this.getCommentCountPerPost(element.id, element)}</div>
+                                            <div>{element.commentCount}</div>
                                             <div>vote numbers</div>
                                             <div>{element.voteScore}</div>
                                             <div className="author-info-grp">

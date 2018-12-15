@@ -10,12 +10,12 @@ export default function (state = INITIAL_STATE, action) {
         state.value.splice(commentIndex, 1, action.payload)
         return {...state}
     case 'COMMENTS_SAVE':
-        return {value: state.value.concat(action.payload)}
+        return {...state, value: state.value.concat(action.payload)}
     case 'COMMENTS_VOTE':
         const { payload } = action
         return {...state, value: payload }
     case 'COMMENTS_GET_ALL':
-        return {...state, value: action.payload}
+        return {...state, value: action.payload, comment:{}}
     case 'COMMENTS_GET_BY_ID':
         return {...state, comment: action.payload}
     default:

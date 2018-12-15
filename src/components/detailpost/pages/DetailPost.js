@@ -3,7 +3,7 @@ import { CardBody, Card, CardTitle, CardSubtitle, Collapse, Button } from 'react
 import { Link, Redirect} from 'react-router-dom'
 import './detailPost.scss'
 import { connect } from 'react-redux'
-import { getPostById, votePost, removePost } from '../../../posts/actions'
+import { getPostById, votePost, removePost, getAllPosts, editPostDecrementCommentCount } from '../../../posts/actions'
 import {getAllComments, voteComment, getCommentById, deleteComment} from '../../../comments/actions'
 
 
@@ -67,12 +67,14 @@ class DetailPost extends Component {
 
     deleteComment(id){
         this.props.deleteCommentAction(id)
+        this.props.editPostDecrementCommentCount(this.props.match.params.id, this.props.post)
     }
 
 
     componentDidMount(){
         this.props.getPostByIdAction(this.props.match.params.id)
         this.props.getAllCommentsAction(this.props.match.params.id)
+        this.props.initialPostsAction()
     }
 
     submitForm(event) {
@@ -86,8 +88,7 @@ class DetailPost extends Component {
         if (this.state.postEdited) {
             return (<Redirect to={'/'} />)
         }
-        else{
-            console.log('commnents no render', comments)
+        else if(this.props.post){
             return(
                 <Fragment>
                     <div className="header-post">
@@ -118,7 +119,7 @@ class DetailPost extends Component {
                                 <div>Score votes</div>
                                 <div>{this.props.post.voteScore}</div>
                                 <div>Comment numbers</div>
-                                <div>{this.props.comment.length}</div>
+                                <div>{this.props.post.commentCount}</div>
                             </CardBody>
                         </Card>
                         <Button className="comments-button" color="secondary" onClick={() => this.toggle()}>Comments</Button>
@@ -174,7 +175,6 @@ class DetailPost extends Component {
 
     checkComment = () => {
         const { comment = [] } = this.props
-        console.log('comment do check', comment)
         const filteredComments = comment.filter(comment => !comment.deleted)
         return filteredComments
     }
@@ -188,12 +188,14 @@ class DetailPost extends Component {
 function mapDispatchToProps(dispatch){
     return {
         deleteCommentAction: (id) => dispatch(deleteComment(id)),
+        initialPostsAction: () => dispatch(getAllPosts()),
         deletePostAction: (id) => dispatch(removePost(id)),
         getPostByIdAction: (id) => dispatch(getPostById(id)),
         getAllCommentsAction:(id) => dispatch(getAllComments(id)),
         voteCommentAction:(id, option) => dispatch(voteComment(id, option)),
         getCommentByIdAction: (id) => dispatch(getCommentById(id)),
-        votePostAction:(id, option) => dispatch(votePost(id, option))
+        votePostAction:(id, option) => dispatch(votePost(id, option)),
+        editPostDecrementCommentCount:(id, post) => dispatch(editPostDecrementCommentCount(id, post)),
     }
 }
 

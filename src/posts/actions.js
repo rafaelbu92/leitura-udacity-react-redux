@@ -20,7 +20,6 @@ function votePost(id, option){
 function removePost(id) {
     return (dispatch) => {
         BackAPI.removePost(id).then(resp => {
-            console.log(resp)
             dispatch({
                 type: 'POSTS_REMOVE',
                 payload: resp
@@ -44,7 +43,6 @@ function getAllSortedPosts() {
     return dispatch => {
         BackAPI.getAllPosts().then( resp => {
             const respSorted = resp.sort((a,b) =>  b.voteScore - a.voteScore)
-            console.log('respSorted(payload) da action POSTS_GET_BY_ID', resp)
             dispatch({
                 type: 'POSTS_GET_ALL',
                 payload: respSorted
@@ -56,7 +54,6 @@ function getAllSortedPosts() {
 function getPostById(id){
     return (dispatch) => {
         BackAPI.getPostById(id).then( resp => {
-            console.log('resp do by id', resp)
             dispatch({
                 type: 'POSTS_GET_BY_ID',
                 payload: resp
@@ -68,7 +65,6 @@ function getPostById(id){
 function getPostsByCategory(category) {
     return dispatch => {
         BackAPI.getPostsByCategory(category).then( resp => {
-            console.log('resp da action POSTS_GET_ALL_BY_CATEGORY', resp)
             dispatch({
                 type: 'POSTS_GET_ALL_BY_CATEGORY',
                 payload: resp
@@ -105,7 +101,47 @@ function editPost(id, post) {
     }
 }
 
-export { getAllPosts ,getPostsByCategory, savePost, removePost, editPost, getPostById, votePost, getAllSortedPosts }
+function editPostIncrementalCommentCount(id, post) {
+    return (dispatch, getState) => {
+        const { posts } = getState()
+        const allPosts = [].concat(posts.value)
+        let newCommentCount = post.commentCount
+        newCommentCount = newCommentCount + 1
+        post.commentCount = newCommentCount
+        const postIndex = allPosts.findIndex(p => p.id === post.id)
+        if (postIndex >= 0) {
+            allPosts.splice(postIndex, 1, post)
+            BackAPI.editPost(id, post).then( resp => {
+                dispatch({
+                    type: 'POSTS_EDIT',
+                    payload: { allPosts, post: resp }
+                })
+            })
+        }
+    }
+}
+
+function editPostDecrementCommentCount(id, post) {
+    return (dispatch, getState) => {
+        const { posts } = getState()
+        const allPosts = [].concat(posts.value)
+        let newCommentCount = post.commentCount
+        newCommentCount = newCommentCount - 1
+        post.commentCount = newCommentCount
+        const postIndex = allPosts.findIndex(p => p.id === post.id)
+        if (postIndex >= 0) {
+            allPosts.splice(postIndex, 1, post)
+            BackAPI.editPost(id, post).then( resp => {
+                dispatch({
+                    type: 'POSTS_EDIT',
+                    payload: { allPosts, post: resp }
+                })
+            })
+        }
+    }
+}
+
+export { getAllPosts , editPostIncrementalCommentCount, editPostDecrementCommentCount  ,getPostsByCategory, savePost, removePost, editPost, getPostById, votePost, getAllSortedPosts }
 
 
 
