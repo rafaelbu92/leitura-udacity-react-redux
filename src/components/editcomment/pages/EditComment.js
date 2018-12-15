@@ -4,7 +4,7 @@ import { Redirect, Link } from 'react-router-dom'
 import './editComment.scss'
 import { connect } from 'react-redux'
 import { getCommentById, editComment } from '../../../comments/actions'
-import { editPost, getAllPosts } from '../../../posts/actions'
+import { getAllPosts } from '../../../posts/actions'
 
 
 class EditComment extends Component {
