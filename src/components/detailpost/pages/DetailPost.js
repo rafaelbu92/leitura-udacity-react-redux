@@ -84,7 +84,6 @@ class DetailPost extends Component {
     }
 
     render(){
-        console.log(this.props.post)
         const comments = this.checkComment()
         if (this.state.postEdited) {
             return (<Redirect to={'/'} />)
