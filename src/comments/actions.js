@@ -1,5 +1,6 @@
 import * as BackAPI from 'resources/backCommentAPI'
 
+
 function voteComment(id, option){
     return (dispatch, getState) => {
         BackAPI.voteComment(id, option).then(resp => {
