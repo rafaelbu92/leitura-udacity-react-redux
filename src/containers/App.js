@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { Router, Switch, Route } from 'react-router-dom'
 import NewPost from 'components/newpost/pages/NewPost'
 import NewComment from 'components/newcomment/pages/NewComment'
 import DetailPost from 'components/detailpost/pages/DetailPost'
@@ -8,8 +8,12 @@ import EditComment from 'components/editcomment/pages/EditComment'
 import CardComponent from '../components/home/components/body/components/CardComponent'
 import ErrorComponent from '../utils/ErrorComponent'
 
+const history = createBrowserHistory({
+    baseUrl:'',
+    forceRefresh:false
+})
 const App = () => (
-    <BrowserRouter>
+    <Router history={history}>
         <Switch>
             <Route path="/error" exact component={ErrorComponent}/>
             <Route path="/" exact component={CardComponent}/>
@@ -20,7 +24,8 @@ const App = () => (
             <Route path="/comments/edit/:category/:idPost/:idComment" exact component={EditComment}/>
             <Route path="/:category" exact component={CardComponent}/>
         </Switch>
-    </BrowserRouter>
+    </Router>
 )
 
+export {history}
 export default App
