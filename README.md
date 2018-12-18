@@ -1,12 +1,12 @@
 Project Title:
-*Leitura-udacity-react-redux
+* Leitura-udacity-react-redux
 
 Getting Started:
-*These instructions will get you a copy of the project up and running on your local machine for development. 
+* These instructions will get you a copy of the project up and running on your local machine for development. 
 
 Prerequisites:
-*node installted or npm.
-*visual studio code or any other IDE.
+* node installted or npm.
+* visual studio code or any other IDE.
 
 to executea and compile this API, use the following commands inside of the folder /frontend:
 * 1-) npm install
